@@ -18,10 +18,21 @@
     copy:
       src: /home/antosha/dev_anderson/devops_course/ansible_animals/source/
       dest: /home/antosha/site/
+
+  - name: Copy service
+    copy:
+      src: /home/antosha/dev_anderson/devops_course/ansible_animals/site_flask.service
+      dest: /etc/systemd/system/
+
+  - name: Enable service
+    service: name=site_flask.service enabled=yes
+
+  - name: Start supervisord
+    service: name=site_flask.service state=started
   
-  - name: Shell
-    shell: nohup python3 /home/antosha/site/test_site.py &
-    args:
-      chdir: /home/antosha/site/
+  # - name: Shell
+  #   shell: nohup python3 /home/antosha/site/test_site.py &
+  #   args:
+  #     chdir: /home/antosha/site/
 
 

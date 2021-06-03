@@ -15,7 +15,7 @@ with open(file_name) as f:
 def animal_say(animal, sound, count, heart):
     test_ret=""
     for i in range(int(count)):
-        test_ret+=f'{animal} {sound}\n'
+        test_ret+=f'{animal} say {sound}\n'
     #print(test_ret)
     test_ret+=f'Made with {heart} by Antosha\n'
     return test_ret
@@ -36,7 +36,19 @@ def query_example():
         res2 = json.loads(res)
         #print(emoji_dict.get(res2['animal'].upper()))
         return animal_say(emoji_dict.get(res2['animal'].upper()), res2['sound'], res2['count'], emoji_dict.get("SPARKLING HEART"))
-    return """Hello!\nUse to curl -XPOST -d'{"animal":"cow", "sound":"moooo", "count": 3}'"""+f' http://{socket.gethostname()} or http://{socket.gethostbyname(socket.gethostname())}'
+    res_text = f"""
+    Hello!<br/>
+    Use one of these <a href="https://emojipedia.org/nature">emodji</a><br/><br/>
+    Example:<br/>
+    curl -XPOST -d'{{"animal":"cow", "sound":"moooo", "count": 3}}' http://{socket.gethostname()} or http://{socket.gethostbyname(socket.gethostname())}<br/>
+    🐄 say moooo<br/>
+    🐄 say moooo<br/>
+    🐄 say moooo<br/>
+    🐄 say moooo<br/>
+    🐄 say moooo<br/>
+    Made with 💖 by Antosha"""
+    return res_text
+
 
 if __name__ == '__main__':
     # run app in debug mode on port 5000
