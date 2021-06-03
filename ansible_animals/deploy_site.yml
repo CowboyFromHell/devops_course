@@ -1,0 +1,27 @@
+---
+- hosts: webservers
+  become: yes
+  tasks:
+  
+  - name: Install pip3
+    apt:
+      name: python3-pip
+      state: present
+      update_cache: no
+  
+  - name: Install flask
+    pip:
+      name: flask
+      executable: pip3
+  
+  - name: Copy source
+    copy:
+      src: /home/antosha/dev_anderson/devops_course/ansible_animals/source/
+      dest: /home/antosha/site/
+  
+  - name: Shell
+    shell: nohup python3 /home/antosha/site/test_site.py &
+    args:
+      chdir: /home/antosha/site/
+
+
