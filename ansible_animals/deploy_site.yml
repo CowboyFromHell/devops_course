@@ -16,12 +16,12 @@
   
   - name: Copy source
     copy:
-      src: /home/antosha/dev_anderson/devops_course/ansible_animals/source/
-      dest: /home/antosha/site/
+      src: '{{ playbook_dir }}/source/'
+      dest: /var/www/site/
 
   - name: Copy service
     copy:
-      src: /home/antosha/dev_anderson/devops_course/ansible_animals/site_flask.service
+      src: '{{ playbook_dir }}/site_flask.service'
       dest: /etc/systemd/system/
 
   - name: Enable service
