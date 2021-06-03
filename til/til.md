@@ -7,3 +7,7 @@
 ## 02.06.2021
 + I wrote first script in Gradle and he works.
 + Launched Jenkins on AWS instance and tested my Gradle script.
+
+## 03.06.2021
++ Remembered basics Ansible.
++ I added v1.0 version homework about Ansible.
