@@ -11,3 +11,7 @@
 ## 03.06.2021
 + Remembered basics Ansible.
 + I added v1.0 version homework about Ansible.
+
+## 04.06.2021
++ Made Git server. It turns out it's so simple =)
++ Learned more about CI / CD and types of project works.
