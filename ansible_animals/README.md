@@ -27,13 +27,13 @@ Run command:
 ### What can it?
 
 ```
-curl -XPOST -d'{"animal":"cow", "sound":"moooo", "count": 3}' http://yourhost/
+curl -XPOST -d'{"animal":"cow", "sound":"moooo", "count": 3}' http://yourhost/ or https://yourhost/
 🐄 says moooo
 🐄 says moooo
 🐄 says moooo
 Made with ❤️ by Antosha
 
-curl -XPOST -d'{"animal":"elephant", "sound":"whoooaaa", "count": 5}' http://yourhost/
+curl -XPOST -d'{"animal":"elephant", "sound":"whoooaaa", "count": 5}' http://yourhost/ or https://yourhost/
 🐘 says whoooaaa
 🐘 says whoooaaa
 🐘 says whoooaaa
