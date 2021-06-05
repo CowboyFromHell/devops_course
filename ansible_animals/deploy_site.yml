@@ -19,16 +19,35 @@
       src: '{{ playbook_dir }}/source/'
       dest: /var/www/site/
 
-  - name: Copy service
+  - name: Copy rules
+    copy:
+      src: '{{ playbook_dir }}/rules.ipv4'
+      dest: /etc/iptables_rules/
+
+  - name: Copy service restore_rules
+    copy: 
+      src: '{{ playbook_dir }}/restore_iptables.service'
+      dest: /etc/systemd/system
+  
+  - name: Enable service restore_rules
+    service: name=restore_iptables.service enabled=yes
+
+  - name: Start restore_rules
+    service: name=restore_iptables.service state=started
+
+  - name: Copy service Flask
     copy:
       src: '{{ playbook_dir }}/site_flask.service'
       dest: /etc/systemd/system/
 
-  - name: Enable service
+  - name: Enable service Flask
     service: name=site_flask.service enabled=yes
 
-  - name: Start supervisord
+  - name: Start Flask
     service: name=site_flask.service state=started
+
+
+
   
   # - name: Shell
   #   shell: nohup python3 /home/antosha/site/test_site.py &
