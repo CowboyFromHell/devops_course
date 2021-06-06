@@ -3,5 +3,5 @@
 while read; do
 	a=$(echo $REPLY | sed -E 's/.*V[0-9]+\.[0-9]+ (.*)/\1/' | sed -E 's/[()]//g' | cut -d ' ' -f 1)
 	b=$(echo $REPLY | sed -E 's/.*V[0-9]+\.[0-9]+ (.*)/\1/' | sed -E 's/[()]//g' | cut -d ' ' -f 2- | tr [:lower:] [:upper:])
-	echo "${b}: $a" >> emodji_convert
+	echo "${b}:$a" >> converted_emodji
 done
