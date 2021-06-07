@@ -1,50 +1,49 @@
 import socket
-import json
-#import re
 from flask import Flask, request
 
+#The file of list emodji
 file_name="converted_emodji"
 
+#Open the file for read
 with open(file_name) as f:
     lines = f.read().strip().split('\n')
-    res = []
-    for i in lines:
-        #res.append(re.sub(r'(\S+): (\S+)', r'\1:\2', i).split(':'))
-        res.append(i.split(':'))
-    emoji_dict = dict(res)
+    res = [i.split(':') for i in lines]
+    emoji_dict = dict(res) #The dictionary of emodji
+    all_emodji = '"EMODJI"<br/>' #Text of emodji for page
+    for key, value in emoji_dict.items():
+        all_emodji+=f"{key}: {value}<br/>"
 
+#The function for a POST request 
 def animal_say(animal, sound, count, heart):
     result=""
+    #Assembling a string
     for i in range(int(count)):
         result+=f'{animal} say {sound}\n'
-    #print(result)
     result+=f'Made with {heart} by Antosha\n'
     return result
 
-# create the Flask app
+# Create the Flask app
 app = Flask(__name__)
 
+#The root page
 @app.route('/', methods=['GET', 'POST'])
 def query_example():
+    #Action for a POST request
     if request.method == 'POST':
-    #a = [i for i in request.form]
-    #print(a)
-    #request_data = request.get_json()
-    #print(request_data)
-    #print(type(request_data))
+        request_data = request.get_json(force=True) #Fetch a user data
+        #Check the user data
         try:
-            res = list(request.form.keys())[0]
-            # print(type(res))
-            res2 = json.loads(res)
-            #print(emoji_dict.get(res2['animal'].upper()))
-            return animal_say(emoji_dict.get(res2['animal'].upper()), res2['sound'], res2['count'], emoji_dict.get("SPARKLING HEART"))
+            #Get keys from the user data and transfer for the function
+            return animal_say(emoji_dict.get(request_data['animal'].upper()), request_data['sound'], request_data['count'], emoji_dict.get("SPARKLING HEART"))
         except:
+            #If the user data is incorrect
             return f"""Use this format: {{animal:"dog", sound:"woof", count: 4}}"""+"\n"
+    #The root page
     res_text = f"""
     Hello!<br/>
-    Use one of these <a href="https://emojipedia.org/nature">emodji</a><br/><br/>
+    Use one of these <a href="converted_emodji">emodji</a><br/><br/>
     Example:<br/>
-    curl -XPOST -d'{{"animal":"cow", "sound":"moooo", "count": 3}}' http://{socket.gethostname()} or http://{socket.gethostbyname(socket.gethostname())}<br/>
+    curl -XPOST -d'{{"animal":"cow", "sound":"moooo", "count": 3}}' https://{socket.gethostname()} or https://{socket.gethostbyname(socket.gethostname())}<br/>
     🐄 say moooo<br/>
     🐄 say moooo<br/>
     🐄 say moooo<br/>
@@ -53,9 +52,13 @@ def query_example():
     Made with 💖 by Antosha"""
     return res_text
 
+#Page of emodji list
+@app.route('/converted_emodji', methods=['GET', 'POST'])
+def second_page():
+    return all_emodji
+
+
 
 if __name__ == '__main__':
-    # run app in debug mode on port 5000
-    #app.run(debug=True, port=5000)
-    context = ('cert.pem', 'key.pem')
+    context = ('cert.pem', 'key.pem') #Self signed certificate
     app.run(host="0.0.0.0", port=443, ssl_context=context)
