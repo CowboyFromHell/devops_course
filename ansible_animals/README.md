@@ -15,7 +15,7 @@ ansible_become_pass='{{ my_password }}'
 Use ansible-vault to create password.yml:
 ```ansible-vault create password.yml```
 
-And add this line ```my_cluser_sudo_pass: my_password``` into file
+And add this line ```my_sudo_pass: my_password``` into file
 
 
 ### Run playbook
