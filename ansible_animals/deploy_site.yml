@@ -1,0 +1,57 @@
+---
+- hosts: webservers
+  become: yes
+  tasks:
+  
+  - name: Install pip3
+    apt:
+      name: python3-pip
+      state: present
+      update_cache: no
+  
+  - name: Install flask
+    pip:
+      name: flask
+      executable: pip3
+  
+  - name: Copy source
+    copy:
+      src: '{{ playbook_dir }}/source/'
+      dest: /var/www/site/
+
+  - name: Copy rules
+    copy:
+      src: '{{ playbook_dir }}/rules.ipv4'
+      dest: /etc/iptables_rules/
+
+  - name: Copy service restore_rules
+    copy: 
+      src: '{{ playbook_dir }}/restore_iptables.service'
+      dest: /etc/systemd/system
+  
+  - name: Enable service restore_rules
+    service: name=restore_iptables.service enabled=yes
+
+  - name: Start restore_rules
+    service: name=restore_iptables.service state=started
+
+  - name: Copy service Flask
+    copy:
+      src: '{{ playbook_dir }}/site_flask.service'
+      dest: /etc/systemd/system/
+
+  - name: Enable service Flask
+    service: name=site_flask.service enabled=yes
+
+  - name: Start Flask
+    service: name=site_flask.service state=started
+
+
+
+  
+  # - name: Shell
+  #   shell: nohup python3 /home/antosha/site/test_site.py &
+  #   args:
+  #     chdir: /home/antosha/site/
+
+

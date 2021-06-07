@@ -1,0 +1,11 @@
+[Unit]
+Description=My restore iptables rules
+#After=dbus.service
+Before=networking.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/iptables-restore /etc/iptables_rules/rules.ipv4
+
+[Install]
+WantedBy=multi-user.target
