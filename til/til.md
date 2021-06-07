@@ -18,3 +18,7 @@
 
 ## 05.06.2021
 + Finally, I could ran Jenkins task on AWS instance(he didn't fall, like last time), also added the webhook for it. 
+
+## 06.06.2021
++ I read about scrum. The poker scrum is fun =)
++ Left grooming the code and I think my ansible homework is done.
