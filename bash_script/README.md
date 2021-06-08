@@ -1,6 +1,6 @@
 # Shows connections
 This BASH script shows connecting your process!!!  
-Run the script ```bash bash_task``` and answer about questions.
+Run the script ```bash bash_task``` and answer about questions.  
 
 Example:
 ````
