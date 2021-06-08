@@ -1,0 +1,83 @@
+#!/bin/bash
+set -eo pipefail
+
+read -p "Name process or PID: " prog
+if [[ -z $prog ]]; then
+	echo "Empty"
+	exit 1
+fi
+prog="$(echo "$prog" | tr [[:upper:]] [[:lower:]])"
+echo -e "Do you want run from sudo user?\nYou need superuser (root) privileges to see all the information."
+read -p "Yes/No (default no): " answer
+read -p "Number of lines for output (default all): " number_lines
+
+if [[ ! -z "$number_lines" && "$number_lines" =~ [^0-9]+ ]]; then
+	echo "Only digits"
+	exit 2
+fi
+
+
+
+
+ip_addresses() {
+	#echo "$(${1}netstat -tunapl | awk -v prog="$prog" '$0 ~ prog {print $5, $6}')"
+	netstat_result="$(${1}netstat -tunapl | awk -v prog="$prog" '$0 ~ prog {print $5, $6}' | sed -En 's/^([0-9.]+):.* ([A-Za-z_])/\1 \2/p' | sort | uniq -c | sed 's/^\s*//'| sort -nr -k1)"
+	#sudo netstat -tunapl
+	if [[ ! -z "$netstat_result" ]]; then
+		echo -e "\n${prog}:"
+		if [[ ! -z "$number_lines" ]]; then
+			#number_lines="-n "$number_lines""
+			#echo "$number_lines" 
+			#echo "$netstat_result" | head -n $number_lines
+			netstat_result="$(echo "$netstat_result" | head -n $number_lines)"
+		# else
+		# 	echo "$netstat_result"
+		fi
+		#echo "$(echo "$netstat_result" | sort | uniq -c | sed 's/^\s*//'| sort -nr -k1)"
+		
+
+	else
+		echo "Process \"$prog\" not found"
+		exit 4
+	fi
+}
+
+
+orgs(){
+	#IFS='\n'
+	#echo $netstat_result | wc -l
+	#netstat_result=(85.112.117.141 85.112.116.141 74.125.205.94 54.148.233.111)
+	while read IP; do
+		#IP=$(echo $IP | grep -oE '([0-9]+\.){3}[0-9]+')
+		#echo $IP
+		#cat -E <<< $IP
+		#whois $IP
+		#whois "$(echo $IP | awk '{print $2}')"
+		result="$(whois "$(echo $IP | awk '{print $2}')" | awk -F':' '/^Organization/ {print $2}')"
+		if [[ ! -z "$result" ]]; then
+			echo "$result $(echo $IP | awk '{printf(" (Count: %s; State: %s)", $1, $3)}')"
+		fi
+		#echo "$(whois "$(echo $IP | awk '{print $2}')" | awk -F':' '/^Organization/ {print $2}') $(echo $IP | awk '{printf(" (Count: %s; State: %s)", $1, $3)}')"
+	done <<< $netstat_result
+}
+
+
+case $answer in
+	"Yes"|"yes") 
+				#ip_list="$(ip_addresses "sudo ")"
+				#echo "$ip_list"
+				ip_addresses "sudo "
+				orgs
+				;;
+	"No"|"no") 
+				ip_addresses " "
+				;;
+	[[:alnum:]]*)
+				echo "Yes or No"
+				exit 3 #Bad chose
+				;;
+	*) ip_addresses " "
+				;;
+esac
+
+
