@@ -22,3 +22,10 @@
 ## 06.06.2021
 + I read about scrum. The poker scrum is fun =)
 + Left grooming the code and I think my ansible homework is done.
+
+## 07.06.2021
++ Added my ansible homework to main branch.
+
+## 08.06.2021
++ Learned more about management servers.(Need MORE!!!)
++ Added a new bash homework.
