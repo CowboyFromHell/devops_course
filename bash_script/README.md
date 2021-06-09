@@ -4,15 +4,15 @@ Run the script ```bash bash_task``` and answer about questions.
 
 Example:
 ````
-Name process or PID: firefox
+Name process or PID (default all): firefox
 Do you want run from sudo user?
 You need superuser (root) privileges to see all the information.
 Yes/No (default no): yes
-Number of lines for output (default all): 5
+Number of lines for output (default all): 3
 
 firefox:
-   Amazon.com, Inc. (AMAZON-4)  (Count: 6; State: ESTABLISHED)
-   Internet Assigned Numbers Authority (IANA)  (Count: 4; State: ESTABLISHED)
-   Cloudflare, Inc. (CLOUD14)  (Count: 4; State: ESTABLISHED)
-   Google LLC (GOGL)  (Count: 3; State: ESTABLISHED)
+   MCI Communications Services, Inc. d/b/a Verizon Business (MCICS)  (Process: 64162/firefox; IP: 68.232.35.198; Count: 2; State: ESTABLISHED)
+   Amazon Technologies Inc. (AT-88-Z)
+   Amazon.com, Inc. (AMAZON-4)  (Process: 64162/firefox; IP: 52.85.241.235; Count: 2; State: ESTABLISHED)
+   No rganization  (Process: 64162/firefox; IP: 93.186.227.145; Count: 1; State: ESTABLISHED)
 ````
