@@ -29,3 +29,6 @@
 ## 08.06.2021
 + Learned more about management servers.(Need MORE!!!)
 + Added a new bash homework.
+
+## 09.06.2021
++ I done the first bash task. I hope =)
