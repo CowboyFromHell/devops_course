@@ -32,3 +32,7 @@
 
 ## 09.06.2021
 + I done the first bash task. I hope =)
+
+## 10.06.2021
++ Learned more about IDE and types of programming languages.
++ I deployed my first project via Jenkins to S3
