@@ -36,3 +36,7 @@
 ## 10.06.2021
 + Learned more about IDE and types of programming languages.
 + I deployed my first project via Jenkins to S3
+
+## 11.06.2021
++ For the first time in my life, I encountered golang. Python spoiled me.
++ Added telegram_bot, it looks like trash, but this is the first attempt =)
