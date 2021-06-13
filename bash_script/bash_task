@@ -1,5 +1,17 @@
 #!/bin/bash
 #set -eo pipefail
+
+### Checking tools
+if [ -z $(which whois) ]; then
+	echo "Tool 'whois' not found. Please, install 'whois'"
+	exit 66
+fi
+
+if [ -z $(which netstat) ];then
+	echo "Tool 'netstat' not found. Please, install 'netstat'"
+	exit 66
+fi
+
 connections_types=(LISTEN ESTABLISHED TIME_WAIT CLOSE_WAIT " ")
 
 read -p "Name process or PID (default all): " prog 
@@ -15,13 +27,13 @@ fi
 
 echo -e "Do you want run from sudo user?\nYou need superuser (root) privileges to see all the information."
 read -p "Yes/No (default no): " answer
-read -p "Number of lines for output (default all): " number_lines
+#read -p "Number of lines for output (default all): " number_lines
 
 ### Checking for the contents of letters in a variable number_lines
-if [[ ! -z "$number_lines" && "$number_lines" =~ [^0-9]+ ]]; then
-	echo "The number of lines to output can only be a number"
-	exit 2 ### Letters in number_lines
-fi
+# if [[ ! -z "$number_lines" && "$number_lines" =~ [^0-9]+ ]]; then
+# 	echo "The number of lines to output can only be a number"
+# 	exit 2 ### Letters in number_lines
+# fi
 
 
 
@@ -29,10 +41,16 @@ fi
 ip_addresses() {
 	### /^([0-9.]+):.* ([A-Za-z_]+) ([0-9A-Za-z_/-]+).*/\1 \2 \3/ - this regular expression, finds in line ip, state and process (45.55.41.223 CLOSE_WAIT 44815/plugin_host-3)
 	### 's/^\s*//' - this regular expression, replaces tabs with blanks 
-	netstat_result="$(${1}netstat -tunapl | awk -v prog="$prog" '$0 ~ prog {print $5, $6, $7}' | sed -En 's/^([0-9.]+):.* ([A-Za-z_]+) ([0-9A-Za-z_/-]+).*/\1 \2 \3/p' | sort | uniq -c | sed -nE 's/^\s*//p'| sort -nr -k1)"
+	netstat_result="$(${1}netstat -tunapl 2> /dev/null | awk -v prog="$prog" '$0 ~ prog {print $5, $6, $7}' | sed -En 's/^([0-9.]+):.* ([A-Za-z_]+) ([0-9A-Za-z_/-]+).*/\1 \2 \3/p' | sort | uniq -c | sed -nE 's/^\s*//p'| sort -nr -k1)"
 	### Checking netstat_result for emptiness
 	if [[ ! -z "$netstat_result" ]]; then
-		### Formatting the output 
+		### Checking for the contents of letters in a variable number_lines
+		read -p "Number of lines for output (default all of $(echo "$netstat_result" | wc -l) connections): " number_lines
+		if [[ ! -z "$number_lines" && "$number_lines" =~ [^0-9]+ ]]; then
+			echo "The number of lines to output can only be a number"
+			exit 2 ### Letters in number_lines
+		fi
+		### Formatting the output
 		if [[ ! -z "$number_lines" ]]; then			
 			netstat_result="$(echo "$netstat_result" | awk -v connect_type="${connections_types["$(($connect_type -1))"]}" '$0 ~ connect_type {print $0}' | head -n $number_lines)"
 		else
