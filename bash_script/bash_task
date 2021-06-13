@@ -76,13 +76,14 @@ orgs(){
 	# 	echo -e "\n${prog}:"
 	# fi
 	while read IP; do		
-		result="$(whois "$(echo $IP | awk '{print $2}')" | awk -F':' '/^Organization/ {print $2}')"
+		result="$(whois "$(echo $IP | awk '{print $2}')" | awk -F':' '/^Organization/ {print $2}'| sed -En 's/ +([A-Z].*)/\1/p' | tr '\n' ';')"
+		city="$(whois "$(echo $IP | awk '{print $2}')" | awk -F':' '/^City/ {print $2}' | sed -En 's/ +([A-Z].*)/\1/p' | tr '\n' ';')"
 		res_connect="$(echo $IP | awk '{printf(" (Process: %s; IP: %s; Count: %s; State: %s)", $4, $2, $1, $3)}')"
 		### Checking organization and connection type 
 		if [[ ! -z "$result" && ! -z "$res_connect" ]]; then
-			echo "$result $res_connect"
+			echo -e "\nCity: ${city}\nOrganization: $result $res_connect"
 		elif [[ ! -z "$res_connect" ]]; then
-			echo "   No organization $res_connect"			
+			echo -e "\nCity: No city\nNo organization $res_connect"			
 		fi
 	done <<< "$netstat_result"
 }
