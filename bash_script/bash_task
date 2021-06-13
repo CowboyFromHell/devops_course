@@ -19,7 +19,7 @@ read -p "Name process or PID (default all): " prog
 prog="$(echo "$prog" | tr [[:upper:]] [[:lower:]])" 
 
 echo -e "Connection types:\n1) LISTEN\n2) ESTABLISHED\n3) TIME_WAIT\n4) CLOSE_WAIT\n5) ALL"
-read -p "Enter number from 1 to 5 (default 5): " connect_type
+read -p "Enter the number from 1 to 5 (default 5): " connect_type
 if [[ ! -z "$connect_type" && "$connect_type" =~ [6-9] ]]; then
 	echo "The number of connection types can only be a number in the range from 1 to 5"
 	exit 1 ### Letters or other numbers 
@@ -45,7 +45,7 @@ ip_addresses() {
 	### Checking netstat_result for emptiness
 	if [[ ! -z "$netstat_result" ]]; then
 		### Checking for the contents of letters in a variable number_lines
-		read -p "Number of lines for output (default all of $(echo "$netstat_result" | wc -l) connections): " number_lines
+		read -p "Enter the number of lines for output (default all of $(echo "$netstat_result" | wc -l) connections): " number_lines
 		if [[ ! -z "$number_lines" && "$number_lines" =~ [^0-9]+ ]]; then
 			echo "The number of lines to output can only be a number"
 			exit 2 ### Letters in number_lines

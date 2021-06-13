@@ -1,32 +1,30 @@
 # Shows connections
-This BASH script shows connecting your process!!!  
-Run the script ```bash bash_task``` and answer about questions.  
-If there are names without ip, then they are aliases for the same ip:  
+This BASH script shows the connections of your processes!!!  
+Run the script ```bash bash_task``` and answer questions.  
+
+**Be aware that an ip address sometimes has several names.**  
+**Example:**  
 ```
 Amazon.com, Inc. (AMAZO-4)
 Amazon.com, Inc. (AMAZON-4)  (Process: 6062/firefox; IP: 65.9.53.76; Count: 1; State: ESTABLISHED)
 ```
 
-### Example:
+### Example of a running script:
 ````
-Name process or PID (default all): 6062
+Name process or PID (default all): 
 Connection types:
 1) LISTEN
 2) ESTABLISHED
 3) TIME_WAIT
 4) CLOSE_WAIT
 5) ALL
-Enter number from 1 to 5 (default 5): 2
+Enter the number from 1 to 5 (default 5): 
 Do you want run from sudo user?
 You need superuser (root) privileges to see all the information.
 Yes/No (default no): yes
-Number of lines for output (default all): 6
-   No organization  (Process: 6062/firefox; IP: 93.184.220.29; Count: 2; State: ESTABLISHED)
-   No organization  (Process: 6062/firefox; IP: 91.228.74.134; Count: 1; State: ESTABLISHED)
-   Amazon.com, Inc. (AMAZO-4)
-   Amazon.com, Inc. (AMAZON-4)  (Process: 6062/firefox; IP: 65.9.53.76; Count: 1; State: ESTABLISHED)
-   Amazon.com, Inc. (AMAZO-4)
-   Amazon.com, Inc. (AMAZON-4)  (Process: 6062/firefox; IP: 65.9.53.128; Count: 1; State: ESTABLISHED)
-   Google LLC (GOGL)  (Process: 6062/firefox; IP: 64.233.162.155; Count: 1; State: ESTABLISHED)
-   Amazon Technologies Inc. (AT-88-Z)  (Process: 6062/firefox; IP: 34.217.188.66; Count: 1; State: ESTABLISHED)
+[sudo] password for antosha:
+Enter the number of lines for output (default all of 6 connections): 3
+   DigitalOcean, LLC (DO-13)  (Process: 27539/plugin_host-3; IP: 45.55.41.223; Count: 1; State: CLOSE_WAIT)
+   Internet Assigned Numbers Authority (IANA)  (Process: 29322/sshd; IP: 192.168.1.42; Count: 1; State: ESTABLISHED)
+   Internet Assigned Numbers Authority (IANA)  (Process: 603/NetworkManager; IP: 192.168.1.1; Count: 1; State: ESTABLISHED)
 ````
