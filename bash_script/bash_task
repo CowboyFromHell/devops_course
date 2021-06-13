@@ -4,19 +4,24 @@
 ### Checking tools
 if [ -z $(which whois) ]; then
 	echo "Tool 'whois' not found. Please, install 'whois'"
-	exit 66
+	exit 66 ### 'whois' not found
 fi
 
 if [ -z $(which netstat) ];then
 	echo "Tool 'netstat' not found. Please, install 'netstat'"
-	exit 66
+	exit 66 ### 'netstat' not found
 fi
 
 connections_types=(LISTEN ESTABLISHED TIME_WAIT CLOSE_WAIT " ")
 
-read -p "Name process or PID (default all): " prog 
-### Replace all uppercase letters with lowercase
-prog="$(echo "$prog" | tr [[:upper:]] [[:lower:]])" 
+### Checking argument
+if [[ -z "$1" ]];then
+	read -p "Name process or PID (default all): " prog 
+	### Replace all uppercase letters with lowercase
+	prog="$(echo "$prog" | tr [[:upper:]] [[:lower:]])" 
+else 
+	prog="$1"
+fi
 
 echo -e "Connection types:\n1) LISTEN\n2) ESTABLISHED\n3) TIME_WAIT\n4) CLOSE_WAIT\n5) ALL"
 read -p "Enter the number from 1 to 5 (default 5): " connect_type

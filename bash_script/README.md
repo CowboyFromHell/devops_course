@@ -1,6 +1,6 @@
 # Shows connections
 This BASH script shows the connections of your processes!!!  
-Run the script ```bash bash_task``` and answer questions. 
+Run the script ```bash bash_task``` and answer questions or ```bash bash_task PID or NAME_OF_PROCESS```
 
 ### Example of a running script:
 ````
