@@ -40,3 +40,6 @@
 ## 11.06.2021
 + For the first time in my life, I encountered golang. Python spoiled me.
 + Added telegram_bot, it looks like trash, but this is the first attempt =)
+
+## 13.06.2021
++ Fixed bash task and added new features.
