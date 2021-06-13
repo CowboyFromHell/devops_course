@@ -1,13 +1,6 @@
 # Shows connections
 This BASH script shows the connections of your processes!!!  
-Run the script ```bash bash_task``` and answer questions.  
-
-**Be aware that an ip address sometimes has several names.**  
-**Example:**  
-```
-Amazon.com, Inc. (AMAZO-4)
-Amazon.com, Inc. (AMAZON-4)  (Process: 6062/firefox; IP: 65.9.53.76; Count: 1; State: ESTABLISHED)
-```
+Run the script ```bash bash_task``` and answer questions. 
 
 ### Example of a running script:
 ````
@@ -28,3 +21,9 @@ Enter the number of lines for output (default all of 6 connections): 3
    Internet Assigned Numbers Authority (IANA)  (Process: 29322/sshd; IP: 192.168.1.42; Count: 1; State: ESTABLISHED)
    Internet Assigned Numbers Authority (IANA)  (Process: 603/NetworkManager; IP: 192.168.1.1; Count: 1; State: ESTABLISHED)
 ````
+**Be aware that an ip address sometimes has several names.**  
+**Example:**  
+```
+Amazon.com, Inc. (AMAZO-4)
+Amazon.com, Inc. (AMAZON-4)  (Process: 6062/firefox; IP: 65.9.53.76; Count: 1; State: ESTABLISHED)
+```
