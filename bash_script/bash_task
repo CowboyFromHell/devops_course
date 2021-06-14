@@ -12,7 +12,7 @@ if [ -z $(which netstat) ];then
 	exit 66 ### 'netstat' not found
 fi
 
-connections_types=(LISTEN ESTABLISHED TIME_WAIT CLOSE_WAIT " ")
+connections_types=(ESTABLISHED SYN_SENT SYN_RECV FIN_WAIT1 FIN_WAIT2 TIME_WAIT CLOSE CLOSE_WAIT LAST_ACK LISTEN CLOSING UNKNOWN "")
 
 ### Checking argument
 if [[ -z "$1" ]];then
@@ -23,16 +23,24 @@ else
 	prog="$1"
 fi
 
-echo -e "Connection types:\n1) LISTEN\n2) ESTABLISHED\n3) TIME_WAIT\n4) CLOSE_WAIT\n5) ALL"
-read -p "Enter the number from 1 to 5 (default 5): " connect_type
-if [[ ! -z "$connect_type" && "$connect_type" =~ [6-9] ]]; then
-	echo "The number of connection types can only be a number in the range from 1 to 5"
+echo "Connection types:"
+for i in $(seq 0 "$((${#connections_types[@]} -1))"); do
+	if [[ -z "${connections_types[$i]}" ]]; then
+		echo "$(($i+1)) - ALL"
+	else
+		echo "$(($i+1)) - ${connections_types[$i]}"
+	fi
+done
+
+read -p "Enter the number from 1 to ${#connections_types[@]} (default ${#connections_types[@]}): " connect_type
+## Checking for the contents of letters or other numbers in a variable connect_type 
+if [[ ( ! -z "$connect_type" && "$connect_type" =~ [^0-9]+ ) || "$connect_type" -gt "${#connections_types[@]}" ]]; then
+	echo "The number of connection types can only be a number in the range from 1 to ${#connections_types[@]}"
 	exit 1 ### Letters or other numbers 
 fi
 
 echo -e "Do you want run from sudo user?\nYou need superuser (root) privileges to see all the information."
 read -p "Yes/No (default no): " answer
-#read -p "Number of lines for output (default all): " number_lines
 
 ### Checking for the contents of letters in a variable number_lines
 # if [[ ! -z "$number_lines" && "$number_lines" =~ [^0-9]+ ]]; then
@@ -50,7 +58,7 @@ ip_addresses() {
 	### Checking netstat_result for emptiness
 	if [[ ! -z "$netstat_result" ]]; then
 		### Checking for the contents of letters in a variable number_lines
-		read -p "Enter the number of lines for output (default all of $(echo "$netstat_result" | wc -l) connections): " number_lines
+		read -p "Enter the number of lines for output (default all of $(echo "$netstat_result" | awk -v connect_type="${connections_types["$(($connect_type -1))"]}" '$0 ~ connect_type {print $0}' | wc -l) connections): " number_lines
 		if [[ ! -z "$number_lines" && "$number_lines" =~ [^0-9]+ ]]; then
 			echo "The number of lines to output can only be a number"
 			exit 2 ### Letters in number_lines
