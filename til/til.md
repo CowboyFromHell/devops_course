@@ -43,3 +43,10 @@
 
 ## 13.06.2021
 + Fixed bash task and added new features.
+
+## 14.06.2021
++ Finished working on a bash script. Later I will add the ability to use ss instead of netstat.
+
+## 15.06.2021
++ Started learning to use aws cli.
++ Learned more about Git API.
