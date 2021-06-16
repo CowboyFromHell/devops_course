@@ -1,8 +1,8 @@
 # Shows connections
 This BASH script shows the connections of your processes!!!  
-Run the script ```bash bash_task``` or ```bash bash_task PID or NAME_OF_PROCESS``` and answer questions
+Run this script ```bash bash_task``` or ```bash bash_task PID or NAME_OF_PROCESS``` and answer questions
 
-### Example of a running script:
+### Example of the running script:
 ````
 Name process or PID (default all): firefox
 Connection types:
