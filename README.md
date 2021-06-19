@@ -6,3 +6,5 @@ This repository is for my course homework.
 + ### [bash_script](https://github.com/CowboyFromHell/devops_course/tree/devops_master/bash_script) - First bash task
 + ### [rights_chmod](https://github.com/CowboyFromHell/devops_course/tree/devops_master/rights_chmod) - Bonus chmod task
 + ### [telegram_bot](https://github.com/CowboyFromHell/devops_course/tree/devops_master/telegram_bot) - Telegram bot on golang
+
+666
