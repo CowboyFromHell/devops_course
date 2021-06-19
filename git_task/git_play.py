@@ -1,5 +1,6 @@
 import requests
 import re
+import sys
 
 def check_req(url, params):
 	check = requests.get(url, params)
@@ -8,7 +9,7 @@ def check_req(url, params):
 		quit()
 	return check
 
-
+### Open pulls in repo
 def get_open_pulls(user, repo):
 	params = {'per_page' : 100, 'state':'open'}
 	req_reps_names = check_req(f"https://api.github.com/repos/{user}/{repo}/pulls", params)
@@ -69,23 +70,46 @@ def get_commits(user, repo):
 	req_reps_commits = check_req(f"https://api.github.com/repos/{user}/{repo}/commits", params)
 	print(f"\nCommits since {date}:")
 	for i in req_reps_commits.json():
-		print(f"\nAuthor: {i['commit']['author']['name']}\nMessage: {i['commit']['message']}")
+		print(f"\nAuthor: {i['commit']['author']['name']}\nMessage: {i['commit']['message']}\n\n")
 
 
 
 
 
 opt_dict = {'1':get_open_pulls, '2':get_most_prod_authors, '3':get_all, '4':get_commits}
-user_name = input('User git username: ')
-user_repo = input('User git repository: ')
-message = '''1) Show open pull requests
+
+### Menu
+def choice_func():
+	message = '''1) Show open pull requests
 2) Show most productive contributors
 3) Show pull requests with contributor and labels
 4) Show commits since a specific date'''
-choice = input(f'{message}\nEnter the number from 1 to {len(opt_dict)}: ')
-match = re.search(r'[1-4]', choice)
-if match:
+	choice = input(f'{message}\nEnter the number from 1 to {len(opt_dict)}: ')
+	match = re.search(r'[1-4]', choice)
+	if match:
+		opt_dict[choice](user_name, user_repo)
+	else:
+		print('Only a digit from 1 to 3')
 
-	opt_dict[choice](user_name, user_repo)
+
+#templ="https://github.com/freeCodeCamp/freeCodeCamp/asdasd/as/aas"
+
+###Check key
+if len(sys.argv) >= 3:
+	if sys.argv[1] == "-u" or sys.argv[1] == "--url":
+		try:
+			regex=(r'github.com/(?P<user>[\w\-.]+)/(?P<repo>[\w\-.]+)')
+			url_match = re.search(regex, sys.argv[2])
+			user_name = url_match.group('user')
+			user_repo = url_match.group('repo')
+			choice_func()
+		except:
+			print(f"Wrong url: '{sys.argv[2]}'\nUse '-u' if you want to pass a link.\nExample: git_play.py -u https://github.com/user/repo")
+	else:
+		print(f"Wrong key: '{sys.argv[1]}'\nUse '-u'' if you want to pass a link.\nExample: git_play.py -u https://github.com/user/repo")
+		quit()
 else:
-	print('Only a digit from 1 to 3')
+	user_name = input('User git username: ')
+	user_repo = input('User git repository: ')
+	choice_func()
+

@@ -1,6 +1,6 @@
 # Overview pull requests in git repositories
 
-**Run this script** ```python3 git_play.py``` **and answer questions.**  
+**Run this script** ```python3 git_play.py``` **and answer questions or with key '-u/--url'** ```python3 git_play.py --url github.com/user/repo```  
 
 ### Example of the running script:  
 ```
