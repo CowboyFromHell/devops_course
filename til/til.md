@@ -50,3 +50,16 @@
 ## 15.06.2021
 + Started learning to use aws cli.
 + Learned more about Git API.
+
+## 16.06.2021
++ Started write script for aws cli.
+
+## 17.06.2021
++ Learned a lot about GitHub api.
++ Started write parsing script for pull requests on GitHub.
+
+## 18.06.2021
++ Finished aws script and added ansible script for aws instance.
+
+## 19.06.2021
++ Learned a lot about pull requests.
