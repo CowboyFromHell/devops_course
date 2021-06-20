@@ -43,7 +43,7 @@ def query_example():
     Hello!<br/>
     Use one of these <a href="converted_emodji">emodji</a><br/><br/>
     Example:<br/>
-    curl -XPOST -d'{{"animal":"cow", "sound":"moooo", "count": 3}}' https://{socket.gethostname()} or https://{socket.gethostbyname(socket.gethostname())}<br/>
+    curl -XPOST -d'{{"animal":"cow", "sound":"moooo", "count": 3}}' https://{socket.gethostbyname(socket.gethostname())}<br/>
     🐄 say moooo<br/>
     🐄 say moooo<br/>
     🐄 say moooo<br/>

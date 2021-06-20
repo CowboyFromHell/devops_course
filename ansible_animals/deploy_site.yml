@@ -1,8 +1,12 @@
 ---
 - hosts: webservers
-  become: yes
   tasks:
   
+  - name: Resolve ipv4
+    shell: sed -i -E "/.{{ hostvars[inventory_hostname]['ansible_nodename'] }}/ s/([0-9]+\.){3}[0-9]+/{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}/" hosts
+    args:
+      chdir: /etc/
+
   - name: Install pip3
     apt:
       name: python3-pip

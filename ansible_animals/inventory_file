@@ -1,0 +1,8 @@
+[webservers]
+10.0.2.9
+10.0.2.13
+[webservers:vars]
+ansible_become=yes
+ansible_become_method=sudo
+ansible_user=user
+ansible_become_pass='{{ my_password }}'
