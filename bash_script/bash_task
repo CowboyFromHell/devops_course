@@ -16,7 +16,7 @@ connections_types=(ESTABLISHED SYN_SENT SYN_RECV FIN_WAIT1 FIN_WAIT2 TIME_WAIT C
 
 ### Checking argument
 if [[ -z "$1" ]];then
-	read -p "Name process or PID (default all): " prog 
+	read -p "Process name or PID (default all): " prog 
 	### Replace all uppercase letters with lowercase
 	prog="$(echo "$prog" | tr [[:upper:]] [[:lower:]])" 
 else 
