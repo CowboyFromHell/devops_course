@@ -8,7 +8,7 @@ if [ -z $(which whois) ]; then
 fi
 
 if [ -z $(which netstat) ];then
-	echo "Tool 'netstat' not found. Please, install 'netstat'"
+	echo "Tool 'netstat' not found. Please, install 'net-tools' package"
 	exit 66 ### 'netstat' not found
 fi
 
