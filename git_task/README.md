@@ -4,25 +4,35 @@
 
 ### Example of the running script:  
 ```
-User git username: freeCodeCamp
-User git repository: freeCodeCamp
+python3 git_play.py -u https://github.com/kubernetes/kubernetes/pulls
+
 1) Show open pull requests
 2) Show most productive contributors
 3) Show pull requests with contributor and labels
-Enter the number from 1 to 3: 3
+4) Show commits since a specific date
+Enter the number from 1 to 4: 2
+The number of pages to search: 5
+The number of items on page: 50
 
-Pull requests with contributors and labels:
+The number of all authors: 136
+Most popular authors (PR > 1):
 
-Author: renovate[bot]
-The number of PR: 165
-Labels: ['scope: i18n', 'scope: tools/scripts', 'platform: client', 'status: waiting review', 'status: blocked', 'platform: api', 'renovate']
+Author: gy95
+The number of PR: 10
 
-Author: camperbot
-The number of PR: 52
-Labels: ['scope: i18n', 'crowdin-sync', 'platform: client', 'scope: curriculum', 'scope: docs', 'status: waiting review', 'scope: UI']
+Author: BenTheElder
+The number of PR: 9
 
-Author: ojeytonwilliams
-The number of PR: 48
-Labels: ['scope: i18n', 'scope: tools/scripts', 'platform: client', 'scope: curriculum', 'scope: docs', 'status: waiting review', 'platform: api', 'renovate']
+Author: gnufied
+The number of PR: 9
 
+Author: mengjiao-liu
+The number of PR: 8
+
+Author: pacoxu
+The number of PR: 6
+
+Author: tkashem
+The number of PR: 6
+...
 ```

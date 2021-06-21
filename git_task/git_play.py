@@ -11,19 +11,44 @@ def check_req(url, params):
 
 ### Open pulls in repo
 def get_open_pulls(user, repo):
-	params = {'per_page' : 100, 'state':'open'}
-	req_reps_names = check_req(f"https://api.github.com/repos/{user}/{repo}/pulls", params)
-	print("\nOpen pull requests:")
-	for i in req_reps_names.json():
-		print(f"\nTitle: \"{i['title']}\"\nUser: \"{i['user']['login']}\"")
+	pages_pr = input("The number of pages to search: ")
+	items_pr = input("The number of items on page: ")
+	match_pages = re.search(r'[1-9]+', pages_pr)
+	match_items = re.search(r'[1-9]+', items_pr)
+	if not match_pages or not match_items:
+		print("Only digits")
+		quit()
+
+	dict_pulls = {}
+	for i in range(1, int(pages_pr) + 1):
+		params = {'per_page' : items_pr, 'page' : i, 'state':'open'}
+		req_reps_names = check_req(f"https://api.github.com/repos/{user}/{repo}/pulls", params)
+		for i in req_reps_names.json():
+			name = i['user']['login']
+			title_pr = i['title']
+			id_pr = i['id']
+			dict_pulls[id_pr] = {'Title':title_pr, 'User':name}
+	print(f"\nOpen pull requests: {len(dict_pulls)}")
+	for key, value in dict_pulls.items():
+		print(f"\nTitle: '{value['Title']}'\nUser: {value['User']}")
+
 
 
 
 ### Most popular authors
 def get_most_prod_authors(user, repo):
+	pages_pr = input("The number of pages to search: ")
+	items_pr = input("The number of items on page: ")
+	match_pages = re.search(r'[1-9]+', pages_pr)
+	match_items = re.search(r'[1-9]+', items_pr)
+	if not match_pages or not match_items:
+		print("Only digits")
+		quit()
+
+
 	dict_authors = {}
-	for i in range(1, 6):
-		params = {'per_page' : 100, 'page' : i, 'state': 'all'}
+	for i in range(1, int(pages_pr) + 1):
+		params = {'per_page' : items_pr, 'page' : i, 'state': 'all'}
 		req_reps_pulls = check_req(f"https://api.github.com/repos/{user}/{repo}/pulls", params)
 		
 		for i in req_reps_pulls.json():
@@ -31,10 +56,11 @@ def get_most_prod_authors(user, repo):
 			count_pr = dict_authors.get(name, {}).get('Number of PR', 0) + 1
 			dict_authors[name] = {'Number of PR':count_pr}
 
+	print(f"\nThe number of all authors: {len(dict_authors)}")
 	dict_authors = [(key, value) for key, value in dict_authors.items() if value['Number of PR'] > 1]
 	dict_authors.sort(key=lambda i: i[1]['Number of PR'], reverse=True)
 	dict_authors = dict(dict_authors)
-	print("\nMost popular authors:")
+	print("Most popular authors (PR > 1):")
 	for key, value in dict_authors.items():
 		print(f"\nAuthor: {key}\nThe number of PR: {value['Number of PR']}")
 
@@ -43,9 +69,17 @@ def get_most_prod_authors(user, repo):
 
 ### The number of PR each contributors witch labels
 def get_all(user, repo):
+	pages_pr = input("The number of pages to search: ")
+	items_pr = input("The number of items on page: ")
+	match_pages = re.search(r'[1-9]+', pages_pr)
+	match_items = re.search(r'[1-9]+', items_pr)
+	if not match_pages or not match_items:
+		print("Only digits")
+		quit()
+
 	dict_authors = {}
-	for i in range(1, 6):
-		params = {'per_page' : 100, 'page' : i, 'state': 'all'}
+	for i in range(1, int(pages_pr) + 1):
+		params = {'per_page' : items_pr, 'page' : i, 'state': 'all'}
 		req_reps_pulls = check_req(f"https://api.github.com/repos/{user}/{repo}/pulls", params)
 
 		for i in req_reps_pulls.json():
@@ -54,10 +88,11 @@ def get_all(user, repo):
 			count_pr = dict_authors.get(name, {}).get('Number of PR', 0) + 1
 			dict_authors[name] = {'Number of PR':count_pr, 'Labels':list(set(labels))}
 
-	dict_authors = [(key, value) for key, value in dict_authors.items() if value['Number of PR'] > 1]
+	print(f"\nThe number of authors: {len(dict_authors)}")
+	dict_authors = [(key, value) for key, value in dict_authors.items()]
 	dict_authors.sort(key=lambda i: i[1]['Number of PR'], reverse=True)
 	dict_authors = dict(dict_authors)
-	print("\nPull requests with contributors and labels:")
+	print("Pull requests with contributors and labels:")
 	for key, value in dict_authors.items():
 		print(f"\nAuthor: {key}\nThe number of PR: {value['Number of PR']}\nLabels: {value['Labels']}")
 
@@ -92,19 +127,18 @@ def choice_func():
 		print('Only a digit from 1 to 3')
 
 
-#templ="https://github.com/freeCodeCamp/freeCodeCamp/asdasd/as/aas"
 
 ###Check key
 if len(sys.argv) >= 3:
 	if sys.argv[1] == "-u" or sys.argv[1] == "--url":
-		try:
-			regex=(r'github.com/(?P<user>[\w\-.]+)/(?P<repo>[\w\-.]+)')
-			url_match = re.search(regex, sys.argv[2])
-			user_name = url_match.group('user')
-			user_repo = url_match.group('repo')
-			choice_func()
-		except:
-			print(f"Wrong url: '{sys.argv[2]}'\nUse '-u' if you want to pass a link.\nExample: git_play.py -u https://github.com/user/repo")
+		#try:
+		regex=(r'github.com/(?P<user>[\w\-.]+)/(?P<repo>[\w\-.]+)')
+		url_match = re.search(regex, sys.argv[2])
+		user_name = url_match.group('user')
+		user_repo = url_match.group('repo')
+		choice_func()
+		#except:
+			#print(f"Wrong url: '{sys.argv[2]}'\nUse '-u' if you want to pass a link.\nExample: git_play.py -u https://github.com/user/repo")
 	else:
 		print(f"Wrong key: '{sys.argv[1]}'\nUse '-u'' if you want to pass a link.\nExample: git_play.py -u https://github.com/user/repo")
 		quit()
