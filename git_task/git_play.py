@@ -2,6 +2,8 @@ import requests
 import re
 import sys
 
+
+### Checking request
 def check_req(url, params):
 	check = requests.get(url, params)
 	if check.status_code != 200:
@@ -9,16 +11,20 @@ def check_req(url, params):
 		quit()
 	return check
 
-### Open pulls in repo
-def get_open_pulls(user, repo):
+###Checking choice
+def check_choice():
 	pages_pr = input("The number of pages to search: ")
-	items_pr = input("The number of items on page: ")
+	items_pr = input("The number of items on page (max 100): ")
 	match_pages = re.search(r'[1-9]+', pages_pr)
 	match_items = re.search(r'[1-9]+', items_pr)
-	if not match_pages or not match_items:
-		print("Only digits")
+	if not match_pages or not match_items or int(items_pr) > 100:
+		print("Only digits and max items equal 100")
 		quit()
+	return pages_pr, items_pr
 
+### Open pulls in repo
+def get_open_pulls(user, repo):
+	pages_pr, items_pr=check_choice()
 	dict_pulls = {}
 	for i in range(1, int(pages_pr) + 1):
 		params = {'per_page' : items_pr, 'page' : i, 'state':'open'}
@@ -37,15 +43,7 @@ def get_open_pulls(user, repo):
 
 ### Most popular authors
 def get_most_prod_authors(user, repo):
-	pages_pr = input("The number of pages to search: ")
-	items_pr = input("The number of items on page: ")
-	match_pages = re.search(r'[1-9]+', pages_pr)
-	match_items = re.search(r'[1-9]+', items_pr)
-	if not match_pages or not match_items:
-		print("Only digits")
-		quit()
-
-
+	pages_pr, items_pr=check_choice()
 	dict_authors = {}
 	for i in range(1, int(pages_pr) + 1):
 		params = {'per_page' : items_pr, 'page' : i, 'state': 'all'}
@@ -69,14 +67,7 @@ def get_most_prod_authors(user, repo):
 
 ### The number of PR each contributors witch labels
 def get_all(user, repo):
-	pages_pr = input("The number of pages to search: ")
-	items_pr = input("The number of items on page: ")
-	match_pages = re.search(r'[1-9]+', pages_pr)
-	match_items = re.search(r'[1-9]+', items_pr)
-	if not match_pages or not match_items:
-		print("Only digits")
-		quit()
-
+	pages_pr, items_pr=check_choice()
 	dict_authors = {}
 	for i in range(1, int(pages_pr) + 1):
 		params = {'per_page' : items_pr, 'page' : i, 'state': 'all'}
