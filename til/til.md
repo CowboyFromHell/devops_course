@@ -63,3 +63,14 @@
 
 ## 19.06.2021
 + Learned a lot about pull requests.
+
+## 20.06.2021
++ Added a little fix in ansible_playbook.
++ Added new functions in my aws script
+
+## 21.07.2021
++ I cleaned the code for git for a long time, because I often got banned
+
+## 22.07.2021
++ Made a docker container, 49mb.
++ Need a tool to compile python code.
