@@ -74,3 +74,12 @@
 ## 22.07.2021
 + Made a docker container, 49mb.
 + Need a tool to compile python code.
+
+## 23.07.2021
++ Made the docker image total size 9.5mb (python + flask)
+
+## 24.07.2021
++ The whole day I spent for terraform.
+
+## 24.07.2021
++ Wrote two template for terraform.
