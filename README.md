@@ -7,3 +7,4 @@
 + ### [rights_chmod](https://github.com/CowboyFromHell/devops_course/tree/devops_master/rights_chmod) - Bonus chmod task
 + ### [telegram_bot](https://github.com/CowboyFromHell/devops_course/tree/devops_master/telegram_bot) - Telegram bot on golang
 + ### [git_task](https://github.com/CowboyFromHell/devops_course/tree/devops_master/git_task) - Python script to parse pull requests on GitHub
++ ### [docker task](https://github.com/CowboyFromHell/devops_course/tree/devops_master/docker_task) - Python app on flask in a docker image
