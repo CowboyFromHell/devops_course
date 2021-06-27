@@ -66,10 +66,10 @@
 
 ## 20.06.2021
 + Added a little fix in ansible_playbook.
-+ Added new functions in my aws script
++ Added new functions in my aws script.
 
 ## 21.07.2021
-+ I cleaned the code for git for a long time, because I often got banned
++ I cleaned the code for git for a long time, because I often got banned.
 
 ## 22.07.2021
 + Made a docker container, 49mb.
@@ -83,3 +83,12 @@
 
 ## 24.07.2021
 + Wrote two template for terraform.
+
+## 25.07.2021
++ Completed the task of aws but left a few bugs.
+
+## 26.07.2021
++ Read more obout aws iam.
+
+## 27.07.2021
++ Added new variation of the docker image.
