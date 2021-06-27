@@ -1,9 +1,16 @@
 # Docker task
+
+### Variant_1
+Python app on flask framework (size of docker image: **9.52 MB**)
+
+### Variant_2
+Python app on cherrypy framework (size of docker image: **8.34 MB**)
+
 ### Build docker image
-```docker build -t 'name_for_image' .```
+```docker build -t 'name_for_image'```
 
 ### Run docker container
-```docker run -d -p 8080:8080 --name 'name_for_container' 'name of image```
+```docker run -d -p 8080:8080 --name 'name_for_container' 'name of image'```
 
 ### What is in 'source' folder?
 ```test_site_app_4``` - is web python app on flask  
