@@ -23,7 +23,7 @@ var git = [8]string{"[about_myself](https://github.com/CowboyFromHell/devops_cou
 
 
 func main() {
-    bot, err := tgbotapi.NewBotAPI("1896369606:AAGlrBBS-yZCZuCz4mPJWY_8ts_JTUgVEDk")
+    bot, err := tgbotapi.NewBotAPI("TOKEN")
     if err != nil {
         log.Panic(err)
     }
