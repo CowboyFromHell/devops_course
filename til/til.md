@@ -92,3 +92,6 @@
 
 ## 27.07.2021
 + Added new variation of the docker image.
+
+## 28.07.2021
++ Added other variant for docker image
