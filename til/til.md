@@ -95,3 +95,6 @@
 
 ## 28.07.2021
 + Added other variant for docker image
+
+## 29.07.2021
++ AmazonS3 1858.0 Requests of 2000.0, need to reduce appetites.
