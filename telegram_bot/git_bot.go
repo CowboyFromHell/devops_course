@@ -43,15 +43,17 @@ func main() {
         }
 
         if update.Message.Text == "/help" {
-            msg := tgbotapi.NewMessage(update.Message.Chat.ID, "/git - show main repository\n/tasks - show tasks in repository\n/task# - show task, where '#' is a number of tasks")
+            msg := tgbotapi.NewMessage(update.Message.Chat.ID, "/git - show main repository\n/tasks - show tasks in repository\n/task# - show task, where '#' is a number from 1 till 8")
             msg.ParseMode = "markdown"
             bot.Send(msg)
+            continue
         }        
 
         if update.Message.Text == "/git" {
             msg := tgbotapi.NewMessage(update.Message.Chat.ID, "[My repository](https://github.com/CowboyFromHell/devops_course)")
             msg.ParseMode = "markdown"
             bot.Send(msg)
+            continue
         }
 
         if update.Message.Text == "/tasks" {
@@ -64,22 +66,25 @@ func main() {
             msg := tgbotapi.NewMessage(update.Message.Chat.ID, fmt.Sprintf("%s", mess_res.String()))
             msg.ParseMode = "markdown"
             bot.Send(msg)
+            continue
             
         }
 
         if update.Message.Text == "/task" {
-            msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Please send /task# where '#' is a number of tasks")
+            msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Please send /task# where '#' is a number from 1 till 8")
             msg.ParseMode = "markdown"
             bot.Send(msg)
+            continue
         } 
 
-        match, _ := regexp.MatchString("task[1-8]", update.Message.Text)
+        match, _ := regexp.MatchString("^/task[1-8]$", update.Message.Text)
 
         if match { 
             cont, _ := strconv.Atoi(string(update.Message.Text[len(update.Message.Text)-1]-1))
             msg := tgbotapi.NewMessage(update.Message.Chat.ID, git[cont])
             msg.ParseMode = "markdown"
             bot.Send(msg)
+            continue
             // if update.Message.Text != "" {
             //     msg := tgbotapi.NewMessage(update.Message.Chat.ID, "kys")
             //     bot.Send(msg)
@@ -88,7 +93,9 @@ func main() {
             // msg.ParseMode = "markdown"
             // bot.Send(msg)
         }
-
+        msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Please send /help for help")
+        msg.ParseMode = "markdown"
+        bot.Send(msg)
 
         // log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
 
