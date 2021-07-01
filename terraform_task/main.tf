@@ -268,12 +268,18 @@ resource "aws_default_network_acl" "jenk_net_acl" {
 }
 
 ###CREATE INSTANCES
+
+resource "aws_iam_instance_profile" "inst_prof" {
+  role = "web_s3"
+}
+
 resource "aws_instance" "lb_instance_1" {
   ami = "ami-0d8d212151031f51c"
   instance_type = "t2.micro"
   key_name = "doom_key"
   subnet_id = aws_subnet.lb_nat_1.id
   security_groups = [aws_security_group.lb_sc.id]
+  iam_instance_profile  = aws_iam_instance_profile.inst_prof.name
   user_data = file("data_inst")
 
   tags = {
@@ -287,6 +293,7 @@ resource "aws_instance" "lb_instance_2" {
   key_name = "doom_key"
   subnet_id = aws_subnet.lb_nat_2.id
   security_groups = [aws_security_group.lb_sc.id]
+  iam_instance_profile  = aws_iam_instance_profile.inst_prof.name
   user_data = file("data_inst")
 
   tags = {
