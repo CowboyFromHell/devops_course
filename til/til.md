@@ -98,3 +98,6 @@
 
 ## 29.07.2021
 + AmazonS3 1858.0 Requests of 2000.0, need to reduce appetites.
+
+## 30.07.2021
++ Finally I figured out how to add a role for instances thanks to the lecture.
