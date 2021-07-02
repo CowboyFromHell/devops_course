@@ -1,8 +1,9 @@
 #!/bin/bash
-read -e -p "How many days older: " var_days  
-read -e -p "How many hours older: " var_hours 
-read -e -p "How many minutes older: " var_minutes
-mass=("${var_days}" "${var_hours}" "${var_minutes}")
+read -p "How many days older(default 0): " var_days  
+read -p "How many hours older(default 0): " var_hours 
+read -p "How many minutes older(default 0): " var_minutes
+read -p "OwnerID(default all): " var_owner
+mass=("${var_days}" "${var_hours}" "${var_minutes}" "${var_owner}")
 
 
 for i in "${!mass[@]}"; do
@@ -16,8 +17,38 @@ for i in "${!mass[@]}"; do
 	fi
 done
 
+if [[ "${mass[3]}" != "0" ]];then
+	mass[3]="--owner-ids ${mass[3]}"
+else
+	mass[3]=" "
+fi
+
 echo "Wait a minute..."
 custom_date="$(date --date="-${mass[0]} day -${mass[1]} hour -${mass[2]} minutes " '+%Y-%m-%dT%H:%M:%S')"
-echo "$custom_date"
 #aws ec2 describe-snapshots | jq '[.Snapshots[] | select(.StartTime >= "'$custom_date'") | {Description: .Description, StartTime: .StartTime, SnapshotId: .SnapshotId, VolumeSize: .VolumeSize}] | sort_by(.StartTime) | reverse'
-aws ec2 describe-snapshots --query "Snapshots[?(StartTime>='$custom_date')].{Description:Description, StartTime:StartTime, SnapshotId:SnapshotId, VolumeSize:VolumeSize}" | jq 'sort_by(.StartTime) | reverse'
+aws ec2 describe-snapshots ${mass[3]} --query "Snapshots[?(StartTime>='$custom_date')].{Description:Description, OwnerId:OwnerId, StartTime:StartTime, SnapshotId:SnapshotId, VolumeSize:VolumeSize}" | jq 'sort_by(.StartTime) | reverse'
+
+read -p "Will copy snapshots?(yes/no): " answ
+
+case $answ in
+	"yes"|"YES")
+				snaps_ids=()
+				while read -p "SnapshotID: " id_snap; do
+					snaps_ids+=($id_snap)
+					read -p "Add more?(yes/no): " answ_snap
+					case $answ_snap in
+						"yes"|"YES")
+									continue
+									;;
+						"no"|"NO")
+									break
+					esac
+				done
+				read -p "Destination region: " reg
+				for id in "${snaps_ids[@]}"; do
+					aws ec2 copy-snapshot --source-snapshot-id "$id" --source-region "$reg"
+				done
+				;;
+	"no"|"NO")
+			 exit 0
+esac
