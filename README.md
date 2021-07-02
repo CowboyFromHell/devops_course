@@ -9,3 +9,4 @@
 + ### [git_task](https://github.com/CowboyFromHell/devops_course/tree/devops_master/git_task) - Python script to parse pull requests on GitHub
 + ### [docker task](https://github.com/CowboyFromHell/devops_course/tree/devops_master/docker_task) - Python app on flask in a docker image
 + ### [terraform_task](https://github.com/CowboyFromHell/devops_course/tree/devops_master/terraform_task) - Terraform task
++ ### [aws_cli_task](https://github.com/CowboyFromHell/devops_course/tree/devops_master/aws_cli_task) - AWS cli task
