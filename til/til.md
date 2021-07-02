@@ -101,3 +101,6 @@
 
 ## 30.07.2021
 + Finally I figured out how to add a role for instances thanks to the lecture.
+
+## 01.07.2021
++ AWS finally lifted the restrictions and I started doing the cli task.
