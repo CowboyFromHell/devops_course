@@ -267,19 +267,66 @@ resource "aws_default_network_acl" "jenk_net_acl" {
   }  
 }
 
-###CREATE INSTANCES
+###CREATE ROLE
+resource "aws_iam_role" "web_read_s3_role" {
+  name = "web_read_s3"
 
-resource "aws_iam_instance_profile" "inst_prof" {
-  role = "web_s3"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
 }
 
+resource "aws_iam_policy" "web_read_s3_policy" {
+  name        = "web_read_s3"
+  description = "Web read s3"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Effect": "Allow",
+          "Action": [
+              "s3:Get*",
+              "s3:List*"
+          ],
+          "Resource": "*"
+      }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_policy_attachment" "web_read_s3_attach" {
+  name       = "web read s3 attachment"
+  roles      = [aws_iam_role.web_read_s3_role.name]
+  policy_arn = aws_iam_policy.web_read_s3_policy.arn
+}
+
+resource "aws_iam_instance_profile" "web_read_s3_profile" {
+  name = "web_read_s3"
+  role = aws_iam_role.web_read_s3_role.name
+}
+
+###CREATE INSTANCES
 resource "aws_instance" "lb_instance_1" {
   ami = "ami-0d8d212151031f51c"
   instance_type = "t2.micro"
   key_name = "doom_key"
   subnet_id = aws_subnet.lb_nat_1.id
   security_groups = [aws_security_group.lb_sc.id]
-  iam_instance_profile  = aws_iam_instance_profile.inst_prof.name
+  iam_instance_profile  = aws_iam_instance_profile.web_read_s3_profile.name
   user_data = file("data_inst")
 
   tags = {
@@ -293,7 +340,7 @@ resource "aws_instance" "lb_instance_2" {
   key_name = "doom_key"
   subnet_id = aws_subnet.lb_nat_2.id
   security_groups = [aws_security_group.lb_sc.id]
-  iam_instance_profile  = aws_iam_instance_profile.inst_prof.name
+  iam_instance_profile  = aws_iam_instance_profile.web_read_s3_profile.name
   user_data = file("data_inst")
 
   tags = {
@@ -349,4 +396,9 @@ resource "aws_lb_listener" "front_end" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.lb_group.arn
   }
+}
+
+
+output "lb_dns_name" {
+  value = aws_lb.lb_main.dns_name
 }
