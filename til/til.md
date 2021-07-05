@@ -104,3 +104,9 @@
 
 ## 01.07.2021
 + AWS finally lifted the restrictions and I started doing the cli task.
+
+## 02.07.2021
++ Once again I am convinced that Amazon's documentation is one of the best.
+
+## 05.07.2021
++ Terraform + Aws = power. But why doesn't Terraform have native Ansible support?
