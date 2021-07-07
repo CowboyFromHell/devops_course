@@ -1,6 +1,6 @@
 # Terraform template
 ### Diagram
-![Diagram](/terraform_task/Diagram.png)
+![Diagram](/terraform_task/diagram.png)
 
 ### This template deploys:
 + VPC
