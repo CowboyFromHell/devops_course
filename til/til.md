@@ -110,3 +110,9 @@
 
 ## 05.07.2021
 + Terraform + Aws = power. But why doesn't Terraform have native Ansible support?
+
+## 06.07.2021
++ Learned a lot about AWS Network
+
+## 07.07.2021
++ I added endpoint for Terraform task and it work =)
