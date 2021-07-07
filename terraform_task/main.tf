@@ -126,6 +126,29 @@ resource "aws_route_table" "lb_net_rules" {
   }
 }
 
+###CREATE ENDPOINT FOR S3
+resource "aws_vpc_endpoint" "lb_endpoint" {
+  vpc_id = aws_vpc.lb_vpc.id
+  service_name = "com.amazonaws.us-east-2.s3"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids = [aws_route_table.lb_nat_rules.id, aws_route_table.lb_net_rules.id]
+  policy = <<EOF
+{
+    "Statement": [
+        {
+            "Action": "*",
+            "Effect": "Allow",
+            "Resource": "*",
+            "Principal": "*"
+        }
+    ]
+}
+EOF
+  tags = {
+    Name = "LB Endpoint"
+  }
+}
+
 
 ###ASSOCIATE SUBNETS WITH ROUTE TABLES
 resource "aws_route_table_association" "nat_associate_1" {
@@ -268,6 +291,11 @@ resource "aws_default_network_acl" "jenk_net_acl" {
 }
 
 ###CREATE ROLE
+
+# resource "aws_iam_user" "web_read_s3_user" {
+#   name = "web_read_s3"
+# }
+
 resource "aws_iam_role" "web_read_s3_role" {
   name = "web_read_s3"
 
@@ -286,6 +314,20 @@ resource "aws_iam_role" "web_read_s3_role" {
 }
 EOF
 }
+
+# resource "aws_iam_group" "web_read_s3_group" {
+#   name = "web_read_s3"
+# }
+
+# resource "aws_iam_group_membership" "web_read_s3_group_members" {
+#   name = "tf-testing-group-membership"
+
+#   users = [
+#     aws_iam_user.web_read_s3_user.name,
+#   ]
+
+#   group = aws_iam_group.web_read_s3_group.name
+# }
 
 resource "aws_iam_policy" "web_read_s3_policy" {
   name        = "web_read_s3"
@@ -310,7 +352,9 @@ EOF
 
 resource "aws_iam_policy_attachment" "web_read_s3_attach" {
   name       = "web read s3 attachment"
+  # users      = [aws_iam_user.web_read_s3_user.name]
   roles      = [aws_iam_role.web_read_s3_role.name]
+  # groups     = [aws_iam_group.web_read_s3_group.name]
   policy_arn = aws_iam_policy.web_read_s3_policy.arn
 }
 
@@ -348,7 +392,7 @@ resource "aws_instance" "lb_instance_2" {
   }
 }
 
-###CREATE GROUP TARGETS
+###CREATE TARGETS GROUP
 resource "aws_lb_target_group" "lb_group" {
   name     = "http"
   port     = 80
