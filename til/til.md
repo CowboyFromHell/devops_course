@@ -116,3 +116,6 @@
 
 ## 07.07.2021
 + I added endpoint for Terraform task and it work =)
+
+## 08.07.2021
++ I learned about dynamic blocks in Terraform. I will try it the next day.
