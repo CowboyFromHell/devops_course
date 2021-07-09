@@ -15,6 +15,10 @@
 ### VPC
 This template create VPC with 10.10.0.0/16 CIDR and tag name "LB_VPC"  
 
+### S3 bucket
++ In s3_bucket.tf you need change ```bucket = "YOUR BUCKET"``` for your bucket name (Bucket name must be unique and must not contain spaces or uppercase letters!!!!!)
+After create, will be to copied ```index.html``` to S3 bucket
+
 ### Subnets
 5 subnets are created inside the VPC in different availability zones: 
 + ```lb_nat_1``` (10.10.1.0/24, us-east-2a) - first private subnet for instances
