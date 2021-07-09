@@ -119,3 +119,6 @@
 
 ## 08.07.2021
 + I learned about dynamic blocks in Terraform. I will try it the next day.
+
+## 09.07.2021
++ I did this and split the main script. The way Terraform builds dependencies is very cool.
