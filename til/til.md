@@ -122,3 +122,6 @@
 
 ## 09.07.2021
 + I did this and split the main script. The way Terraform builds dependencies is very cool.
+
+## 10.07.2021
++ Watched AWS CloudFormation, funny.
