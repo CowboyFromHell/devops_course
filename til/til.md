@@ -125,3 +125,9 @@
 
 ## 10.07.2021
 + Watched AWS CloudFormation, funny.
+
+## 12.07.2021
++ Learned more about Anderson and defended my thesis at ITMO
+
+## 13.07.2021
++ Wrote my first pipeline(not freestyle) for jenkins and it works 
