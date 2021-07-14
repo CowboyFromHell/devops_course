@@ -10,3 +10,4 @@
 + ### [docker task](https://github.com/CowboyFromHell/devops_course/tree/devops_master/docker_task) - Python app on flask in a docker image
 + ### [terraform_task](https://github.com/CowboyFromHell/devops_course/tree/devops_master/terraform_task) - Terraform task
 + ### [aws_cli_task](https://github.com/CowboyFromHell/devops_course/tree/devops_master/aws_cli_task) - AWS cli task
++ ### [cd_cd](https://github.com/CowboyFromHell/devops_course/tree/devops_master/cd_cd) - About CD/CD difference
