@@ -2,6 +2,9 @@
 ### Diagram
 ![Diagram](/terraform_task/diagram.png)
 
+### How to use
+In the main directory, run **```terraform init```** to load the terraform modules, **```terraform plan```** to see the configuration, and **```terraform apply```** to apply the configuration.
+
 ### This template deploys:
 + VPC
 + Subnets
