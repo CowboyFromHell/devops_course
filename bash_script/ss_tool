@@ -1,19 +1,11 @@
 #!/bin/bash
-#set -eo pipefail
 
 ### Checking tools
-if [ -z $(which whois) ]; then
-	echo "Tool 'whois' not found. Please, install 'whois'"
-	exit 66 ### 'whois' not found
-fi
-
-if [ -z $(which netstat) ];then
-	echo "Tool 'netstat' not found. Please, install 'netstat'"
+if [ -z $(which ss) ];then
+	echo "Tool 'ss' not found. Please, install 'ss'"
 	exit 66 ### 'netstat' not found
 fi
-
-connections_types=(ESTABLISHED SYN_SENT SYN_RECV FIN_WAIT1 FIN_WAIT2 TIME_WAIT CLOSE CLOSE_WAIT LAST_ACK LISTEN CLOSING UNKNOWN "")
-
+connections_types_ss=(established syn-sent syn-recv fin-wait-1 fin-wait-2 time-wait closed close-wait last-ack listening closing all)
 ### Checking argument
 if [[ -z "$1" ]];then
 	read -p "Process name or PID (default all): " prog 
@@ -24,54 +16,45 @@ else
 fi
 
 echo "Connection types:"
-for i in $(seq 0 "$((${#connections_types[@]} -1))"); do
-	if [[ -z "${connections_types[$i]}" ]]; then
-		echo "$(($i+1)) - ALL"
-	else
-		echo "$(($i+1)) - ${connections_types[$i]}"
-	fi
+for i in $(seq 0 "$((${#connections_types_ss[@]} -1))"); do
+	echo "$(($i+1)) - ${connections_types_ss[$i]}"
 done
 
-read -p "Enter the number from 1 to ${#connections_types[@]} (default ${#connections_types[@]}): " connect_type
+read -p "Enter the number from 1 to ${#connections_types_ss[@]} (default ${#connections_types_ss[@]}): " connect_type
 ## Checking for the contents of letters or other numbers in a variable connect_type 
-if [[ ( ! -z "$connect_type" && "$connect_type" =~ [^0-9]+ ) || "$connect_type" -gt "${#connections_types[@]}" ]]; then
-	echo "The number of connection types can only be a number in the range from 1 to ${#connections_types[@]}"
+if [[ ( ! -z "$connect_type" && "$connect_type" =~ [^0-9]+ ) || "$connect_type" -gt "${#connections_types_ss[@]}" ]]; then
+	echo "The number of connection types can only be a number in the range from 1 to ${#connections_types_ss[@]}"
 	exit 1 ### Letters or other numbers 
 fi
 
 echo -e "Do you want run from sudo user?\nYou need superuser (root) privileges to see all the information."
 read -p "Yes/No (default no): " answer
 
-### Checking for the contents of letters in a variable number_lines
-# if [[ ! -z "$number_lines" && "$number_lines" =~ [^0-9]+ ]]; then
-# 	echo "The number of lines to output can only be a number"
-# 	exit 2 ### Letters in number_lines
-# fi
-
-
 
 #Get ip addresses
 ip_addresses() {
 	### /^([0-9.]+):.* ([A-Za-z_]+) ([0-9A-Za-z_/-]+).*/\1 \2 \3/ - this regular expression, finds in line ip, state and process (45.55.41.223 CLOSE_WAIT 44815/plugin_host-3)
-	### 's/^\s*//' - this regular expression, replaces tabs with blanks 
-	netstat_result="$(${1}netstat -tunapl 2> /dev/null | awk -v prog="$prog" '$0 ~ prog {print $5, $6, $7}' | sed -En 's/^([0-9.]+):.* ([A-Za-z_]+) ([0-9A-Za-z_/-]+).*/\1 \2 \3/p' | sort | uniq -c | sed -nE 's/^\s*//p'| sort -nr -k1)"
-	### Checking netstat_result for emptiness
-	if [[ ! -z "$netstat_result" ]]; then
+	### 's/^\s*//' - this regular expression, replaces tabs with blanks
+	if [[ "${connections_types_ss["$(($connect_type -1))"]}" == "all" ]]; then
+		netstat_result_ss="$(${1}ss -tunap state "all" 2> /dev/null | awk -v prog="$prog" '$0 ~ prog {print $6, $2, $7}' | sed -En 's/^([0-9.]+):.* ([A-Za-z_-]+) (.*)/\1 \2 \3/p' | sort | uniq -c | sed -nE 's/^\s*//p'| sort -nr -k1)"
+	else
+		netstat_result_ss="$(${1}ss -tunap state "${connections_types_ss["$(($connect_type -1))"]}" | awk -v prog="$prog" -v state="${connections_types_ss["$(($connect_type -1))"]}" '$0 ~ prog {print $5, state, $6}' | sed -En 's/^([0-9.]+):.* ([A-Za-z_-]+) (.*)/\1 \2 \3/p' | sort | uniq -c | sed -nE 's/^\s*//p'| sort -nr -k1)" 
+	fi
+	### Checking netstat_result_ss for emptiness
+	if [[ ! -z "$netstat_result_ss" ]]; then
 		### Checking for the contents of letters in a variable number_lines
-		read -p "Enter the number of lines for output (default all of $(echo "$netstat_result" | awk -v connect_type="${connections_types["$(($connect_type -1))"]}" '$0 ~ connect_type {print $0}' | wc -l) connections): " number_lines
+		read -p "Enter the number of lines for output (default all of $(echo "$netstat_result_ss" | wc -l) connections): " number_lines
 		if [[ ! -z "$number_lines" && "$number_lines" =~ [^0-9]+ ]]; then
 			echo "The number of lines to output can only be a number"
 			exit 2 ### Letters in number_lines
 		fi
 		### Formatting the output
 		if [[ ! -z "$number_lines" ]]; then			
-			netstat_result="$(echo "$netstat_result" | awk -v connect_type="${connections_types["$(($connect_type -1))"]}" '$0 ~ connect_type {print $0}' | head -n $number_lines)"
-		else
-			netstat_result="$(echo "$netstat_result" | awk -v connect_type="${connections_types["$(($connect_type -1))"]}" '$0 ~ connect_type {print $0}')"
+			netstat_result_ss="$(echo "$netstat_result_ss" | head -n $number_lines)"
 		fi
 	else
-		echo "Process \"$prog\" not found"
-		exit 4 ### If netstat_result is empty
+		echo "Process \"$prog\" or connect type \"${connections_types_ss["$(($connect_type -1))"]}\" not found"
+		exit 4 ### If netstat_result_ss is empty
 	fi
 }
 
@@ -93,7 +76,7 @@ orgs(){
 		elif [[ ! -z "$res_connect" ]]; then
 			echo -e "\nCity: No city\nNo organization $res_connect"			
 		fi
-	done <<< "$netstat_result"
+	done <<< "$netstat_result_ss"
 }
 
 #Checking the answer about SUDO
@@ -114,5 +97,3 @@ case $answer in
 		orgs
 				;;
 esac
-
-
