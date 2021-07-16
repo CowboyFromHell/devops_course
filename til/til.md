@@ -131,3 +131,9 @@
 
 ## 13.07.2021
 + Wrote my first pipeline(not freestyle) for jenkins and it works 
+
+## 14.07.2021
++ Learned a lot about databases.
+
+## 15.07.2021
++ Added new function "ss_tool" for bash task.
