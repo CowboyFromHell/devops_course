@@ -9,7 +9,7 @@ Python app on cherrypy framework (size of docker image: **8.34 MB**)
 ### Build docker image
 ```
 1. Create 'tmp' folder near 'source' folder
-2. docker build -t 'name_for_image'
+2. docker build -t 'name_for_image' .
 ```
 
 ### Run docker container
