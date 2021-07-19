@@ -137,3 +137,6 @@
 
 ## 15.07.2021
 + Added new function "ss_tool" for bash task.
+
+## 19.07.2021
++ All weekend I was trying to install nvidia driver on Debian. Driver on Ubuntu works fine, on Debian doesn't see xserver screen(0).
