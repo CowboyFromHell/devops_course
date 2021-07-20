@@ -10,6 +10,7 @@ python3 git_play.py -u https://github.com/kubernetes/kubernetes/pulls
 2) Show most productive contributors
 3) Show pull requests with contributor and labels
 4) Show commits since a specific date
+5) Show list repository contributors
 Enter the number from 1 to 4: 2
 The number of pages to search: 5
 The number of items on page: 50

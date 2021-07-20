@@ -11,7 +11,7 @@ def check_req(url, params):
 		quit()
 	return check
 
-###Checking choice
+### Checking choice
 def check_choice():
 	pages_pr = input("The number of pages to search: ")
 	items_pr = input("The number of items on page (max 100): ")
@@ -21,6 +21,21 @@ def check_choice():
 		print("Only digits and max items equal 100")
 		quit()
 	return pages_pr, items_pr
+
+### List repository contributors
+def check_contr(user, repo):
+	pages_pr, items_pr=check_choice()
+	dict_contr = {}
+	for i in range(1, int(pages_pr) + 1):
+		params = {'per_page' : items_pr, 'page' : i}
+		req_reps_contr = check_req(f"https://api.github.com/repos/{user}/{repo}/contributors", params)
+		for i in req_reps_contr.json():
+			contr_name = i['login'] 
+			contr_repo = i['html_url']
+			dict_contr[contr_name] = contr_repo
+	print(f"\nList repository contributors:")
+	for key, value in dict_contr.items():
+		print(f'\nUser: {key}\nRepository: {value}')
 
 ### Open pulls in repo
 def get_open_pulls(user, repo):
@@ -102,20 +117,21 @@ def get_commits(user, repo):
 
 
 
-opt_dict = {'1':get_open_pulls, '2':get_most_prod_authors, '3':get_all, '4':get_commits}
+opt_dict = {'1':get_open_pulls, '2':get_most_prod_authors, '3':get_all, '4':get_commits, '5':check_contr}
 
 ### Menu
 def choice_func():
 	message = '''1) Show open pull requests
 2) Show most productive contributors
 3) Show pull requests with contributor and labels
-4) Show commits since a specific date'''
+4) Show commits since a specific date
+5) Show list repository contributors'''
 	choice = input(f'{message}\nEnter the number from 1 to {len(opt_dict)}: ')
-	match = re.search(r'[1-4]', choice)
+	match = re.search(r'[1-5]', choice)
 	if match:
 		opt_dict[choice](user_name, user_repo)
 	else:
-		print('Only a digit from 1 to 3')
+		print('Only a digit from 1 to 5')
 
 
 
