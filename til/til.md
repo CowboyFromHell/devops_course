@@ -140,3 +140,6 @@
 
 ## 19.07.2021
 + All weekend I was trying to install nvidia driver on Debian. Driver on Ubuntu works fine, on Debian doesn't see xserver screen(0).
+
+## 20.07.2021
++ I added new function for "git_task"
