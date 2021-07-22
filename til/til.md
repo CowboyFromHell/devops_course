@@ -143,3 +143,6 @@
 
 ## 20.07.2021
 + I added new function for "git_task"
+
+## 22.07.2021
++ I started doing the exam task.
