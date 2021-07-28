@@ -15,6 +15,7 @@ pipeline {
 		stage('Building docker image') {
 			steps {
 				sh 'docker build -t app_py_img .'
+				// Snyk is checking image
 				snykSecurity additionalArguments: '--docker app_py_img:latest', severity: 'medium', snykInstallation: 'Snyk', snykTokenId: 'Snyk', targetFile: 'Dockerfile'
 				sh 'docker save app_py_img > app_py.tar'				   
 			}
