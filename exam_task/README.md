@@ -12,7 +12,7 @@
 
 ### Docker Hub
 For future builds, I have prepared special builders for **[go](https://hub.docker.com/layers/159441296/privetkakdela/devops_course/go_builder/images/sha256-46e2588e18895400c81d42bb1138e77df1835ed3b3a5a93e4e47a58994c9a14e?context=repo)** and **[py](https://hub.docker.com/layers/159379567/privetkakdela/devops_course/python_builder/images/sha256-0e06bcb4775030a27d6893093a732bce05d1a28e6d5908b376fd93198009e0b3?context=repo)** applications. All libraries required for the build are installed in the builders.  
-This makes the builders **standalone**. Also built **[jenkins](https://hub.docker.com/layers/159681876/privetkakdela/devops_course/jenk_aws_cli/images/sha256-52f9e9c5263e19f859df92c02fe4acb000bad7069274d545af921cf628cedac3?context=repo)** image with aws cli support.
+This makes the builders **standalone**. Also built **[jenkins](https://hub.docker.com/layers/159681876/privetkakdela/devops_course/jenk_aws_cli/images/sha256-52f9e9c5263e19f859df92c02fe4acb000bad7069274d545af921cf628cedac3?context=repo)** image with aws cli support. Source **[dockerfiles](https://github.com/CowboyFromHell/devops_course/tree/devops_master/exam_task/dockerfiles)**.
 
 
 ### Terraform
