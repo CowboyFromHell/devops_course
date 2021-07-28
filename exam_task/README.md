@@ -28,13 +28,14 @@ This makes the builders **standalone**. Also built **[jenkins](https://hub.docke
 + **IAM role - assign a role to an EC2 instance from policy**
 + **Instances - EC2 virtual machines**
 
-In the end, it launches the **ansible** **[playbook](https://github.com/CowboyFromHell/devops_course/blob/devops_master/exam_task/source/deploy_docker_jenk.yml)** to deploy **jenkins settings** to the target host and rewrites the IPs on the **GitHub webhooks** with a script **[update_git_hook](https://github.com/CowboyFromHell/devops_course/blob/devops_master/exam_task/source/update_git_hook)**
+In the end, it launches the **ansible** **[playbook](https://github.com/CowboyFromHell/devops_course/blob/devops_master/exam_task/source/deploy_docker_jenk.yml)** to deploy **jenkins settings** to the target host and rewrites the IPs on the **GitHub webhooks** with a script **[update_git_hook](https://github.com/CowboyFromHell/devops_course/blob/devops_master/exam_task/source/update_git_hook)**.
 In **[update_git_hook](https://github.com/CowboyFromHell/devops_course/blob/devops_master/exam_task/source/update_git_hook)** I use **GitHub REST API** with my **token** for **GitHub**. Token encrypted with **openssl** and **aes-256-cbc** algorithm.
 
 ### Jenkins
 **Jenkins** use pipelines for **[app_py](https://github.com/CowboyFromHell/devops_course/blob/devops_master/exam_task/pipelines/pipeline_py)** and **[app_go](https://github.com/CowboyFromHell/devops_course/blob/devops_master/exam_task/pipelines/pipeline_go)**. When building, **snyk** checks docker images for vulnerabilities, if found **snyk** stops building. Also after building apps starting trash collectors: **[remove_trash_py](https://github.com/CowboyFromHell/devops_course/blob/devops_master/exam_task/pipelines/pipeline_trash_py_aws)**, **[remove_trash_go](https://github.com/CowboyFromHell/devops_course/blob/devops_master/exam_task/pipelines/pipeline_trash_go_aws)**. All stages are reported in the **telegram**(**[py](https://github.com/CowboyFromHell/devops_course/blob/devops_master/exam_task/pictures/py_tele.png)**, **[go](https://github.com/CowboyFromHell/devops_course/blob/devops_master/exam_task/pictures/go_tele.png)**)
-**Example Jenkins work:**  
+
+
 ![jenk_work](/exam_task/pictures/my_ci_cd.png)
 
-### The final view of infrastructure:
+# The final view of infrastructure:
 ![dip_work](/exam_task/pictures/Dip_inf.png)
