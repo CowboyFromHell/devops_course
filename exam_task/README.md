@@ -33,8 +33,8 @@ In **[update_git_hook](https://github.com/CowboyFromHell/devops_course/blob/devo
 
 ### Jenkins
 **Jenkins** use pipelines for **[app_py](https://github.com/CowboyFromHell/devops_course/blob/devops_master/exam_task/pipelines/pipeline_py)** and **[app_go](https://github.com/CowboyFromHell/devops_course/blob/devops_master/exam_task/pipelines/pipeline_go)**. When building, **snyk** checks docker images for vulnerabilities, if found **snyk** stops building. Also after building apps starting trash collectors: **[remove_trash_py](https://github.com/CowboyFromHell/devops_course/blob/devops_master/exam_task/pipelines/pipeline_trash_py_aws)**, **[remove_trash_go](https://github.com/CowboyFromHell/devops_course/blob/devops_master/exam_task/pipelines/pipeline_trash_go_aws)**. All stages are reported in the **telegram**(**[py](https://github.com/CowboyFromHell/devops_course/blob/devops_master/exam_task/pictures/py_tele.png)**, **[go](https://github.com/CowboyFromHell/devops_course/blob/devops_master/exam_task/pictures/go_tele.png)**)
-**Example Jenkins work:**
-![jenk_work](/pictures/my_ci_cd.png)
+**Example Jenkins work:**  
+![jenk_work](/exam_task/pictures/my_ci_cd.png)
 
 ### The final view of infrastructure:
-![dip_work](/pictures/Dip_inf.png)
+![dip_work](/exam_task/pictures/Dip_inf.png)
