@@ -1,0 +1,128 @@
+---
+- hosts: all
+  vars:
+    ansible_become: yes
+    ansible_become_method: sudo
+    ansible_user: ec2-user
+    ansible_ssh_private_key_file: doom_key.pem
+  tasks:
+
+  - debug: var=hostvars[inventory_hostname]['inventory_hostname']
+  - debug: var=bucket
+
+
+  - name: Set timezone to Europe/Moscow
+    timezone:
+      name: Europe/Moscow
+
+  
+
+  - name: Create swap file
+    shell: dd if=/dev/zero of=/swapfile bs=1M count=1024
+
+
+  - name: Change swap file permissions
+    file: 
+      path: /swapfile
+      owner: root
+      group: root
+      mode: 0600
+
+
+  - name: Make swap file
+    shell: mkswap /swapfile
+
+
+  - name: Write swap entry in fstab
+    mount: 
+      name: swap
+      src: /swapfile
+      fstype: swap
+      opts: defaults
+      passno: 0
+      dump: 0
+      state: present
+
+  
+  - name: Mount swap
+    shell: "swapon /swapfile"
+
+
+  - name: Install docker
+    yum:
+      name: docker
+      state: present
+      update_cache: yes
+
+  
+  - name: Enable docker service
+    service: name=docker.service enabled=yes
+
+  
+  - name: Start docker
+    service: name=docker state=started
+
+
+  - name : Restore Jenk
+    unarchive:
+      src: jenk.tar.gz
+      dest: /
+
+  
+  - name: Change ip
+    replace:
+      path: /var/jenk/jenkins.model.JenkinsLocationConfiguration.xml
+      regexp: '([0-9]+\.){3}[0-9]+'
+      replace: "{{ hostvars[inventory_hostname]['inventory_hostname'] }}"
+
+  
+  - name: Change bucket py app
+    replace:
+      path: /var/jenk/jobs/app_py/config.xml
+      regexp: '(.*s3:\/\/)[^/]*(\/.*)'
+      replace: '\1{{ bucket }}\2'
+
+
+  - name: Change bucket go app
+    replace:
+      path: /var/jenk/jobs/go_app/config.xml
+      regexp: '(.*s3:\/\/)[^/]*(\/.*)'
+      replace: '\1{{ bucket }}\2'
+
+  
+  - name: Change bucket py trash
+    replace:
+      path: /var/jenk/jobs/remove_trash_py/config.xml
+      regexp: '(.*s3:\/\/)[^/]*(\/.*)'
+      replace: '\1{{ bucket }}\2'
+
+
+  - name: Change bucket go trash
+    replace:
+      path: /var/jenk/jobs/remove_trash_go/config.xml
+      regexp: '(.*s3:\/\/)[^/]*(\/.*)'
+      replace: '\1{{ bucket }}\2'
+
+
+  - name: Remove src
+    file:
+      path: /home/ec2-user/jenk.tar.gz
+      state: absent
+
+
+  - name: Change owner
+    file:
+      path: /var/run/docker.sock
+      owner: ec2-user
+      group: docker
+  
+  
+  - name: Adding existing ec2-user to group docker
+    user:
+      name: ec2-user
+      groups: docker
+      append: yes
+
+  
+  - name: Run  Jenk
+    shell: docker run -d -p 8080:8080 -p 50000:50000 -v /var/jenk:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):$(which docker) -v $(which aws):$(which aws) --name jenk privetkakdela/devops_course:jenk_aws_cli

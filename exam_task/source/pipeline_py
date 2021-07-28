@@ -1,0 +1,81 @@
+pipeline {
+	agent any
+
+	stages {
+		stage('Checking Git') {
+			steps {
+				// Send message about start building
+			    withCredentials([string(credentialsId: 'bot_token', variable: 'TOKEN'), string(credentialsId: 'chat_id', variable: 'CHAT_ID')]) {
+                    sh "curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='Started building *${env.JOB_NAME}*\n*Date*: ${sh(script:'date', returnStdout: true).trim()}'"
+                }
+				git branch: 'app_main', url: 'https://github.com/CowboyFromHell/app_one.git'
+			}
+		}
+
+		stage('Building docker image') {
+			steps {
+				sh 'docker build -t app_py_img .'
+				snykSecurity additionalArguments: '--docker app_py_img:latest', severity: 'medium', snykInstallation: 'Snyk', snykTokenId: 'Snyk', targetFile: 'Dockerfile'
+				sh 'docker save app_py_img > app_py.tar'				   
+			}
+		}
+		 
+		 
+		stage('Deploying docker image') {
+			steps {
+			    sshagent(credentials: ['SSH']) {
+			        sh "mkdir -p ~/.ssh/"
+			        sh "ssh-keyscan -t rsa,dsa 10.10.3.100 >> ~/.ssh/known_hosts"
+					sh 'scp app_py.tar ec2-user@10.10.3.100:~'
+					sh "ssh ec2-user@10.10.3.100 'sudo docker load < app_py.tar'"
+					sh "ssh ec2-user@10.10.3.100 'sudo rm app_py.tar'"
+					sh "ssh ec2-user@10.10.3.100 'sudo docker rm -f app_py'"
+					sh "ssh ec2-user@10.10.3.100 'sudo docker run --rm -d -p 8080:8080 --name app_py app_py_img'"
+					// Trying remove remote trash
+					script {
+					    try {
+                            sh "ssh ec2-user@10.10.3.100 'sudo docker image rm \$(sudo docker images -f dangling=true -q)'"
+                        } catch (err) {
+                            echo "First run"
+                        }
+					}
+					// Trying remove local trash
+					script {
+					    try {
+					        sh "docker image rm \$(docker images -f dangling=true -q)"
+					    } catch (err) {
+					        echo "Empty"
+					    }
+					}
+					sh "docker image rm app_py_img"
+					// Uploading image to S3
+					sh "aws s3 cp app_py.tar s3://mydoombucket666/py/\$(date '+%F')/app_py_\$(date '+%H_%M').tar"
+				}
+			}
+
+		}
+	}
+	
+	// Sending message about status current build
+	post {
+        success { 
+            withCredentials([string(credentialsId: 'bot_token', variable: 'TOKEN'), string(credentialsId: 'chat_id', variable: 'CHAT_ID')]) {
+                sh "curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}*:\n*Build*: `OK`\n*Published*: `YES`\n*Date*: ${sh(script:'date', returnStdout: true).trim()}'"
+            }
+        }
+
+        aborted {
+            withCredentials([string(credentialsId: 'bot_token', variable: 'TOKEN'), string(credentialsId: 'chat_id', variable: 'CHAT_ID')]) {
+                sh "curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}*:\n*Build*: `Aborted`\n*Published*: `Aborted`\n*Date*: ${sh(script:'date', returnStdout: true).trim()}'"
+            }
+     
+        }
+        
+        failure {
+            withCredentials([string(credentialsId: 'bot_token', variable: 'TOKEN'), string(credentialsId: 'chat_id', variable: 'CHAT_ID')]) {
+    
+                sh "curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}*:\n*Build* : `Failed`\n*Published*: `NO`\n*Date*: ${sh(script:'date', returnStdout: true).trim()}'"
+            }
+        }
+    }
+}

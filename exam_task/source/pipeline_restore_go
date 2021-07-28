@@ -1,0 +1,28 @@
+pipeline {
+	agent any
+
+	stages {
+		stage('remove trash') {
+		    steps {
+		        sshagent(credentials: ['SSH']) {
+			        sh "aws s3 cp s3://mydoombucket666/go/2021-07-25/app_go_17_34.tar ./app_go.tar"
+			        sh "ssh-keyscan -t rsa,dsa 10.10.4.100 >> ~/.ssh/known_hosts"
+					sh 'scp app_go.tar ec2-user@10.10.4.100:~'
+					sh "ssh ec2-user@10.10.4.100 'sudo docker load < app_go.tar'"
+					sh "ssh ec2-user@10.10.4.100 'sudo rm app_go.tar'"
+					sh "ssh ec2-user@10.10.4.100 'sudo docker rm -f app_go'"
+					sh "ssh ec2-user@10.10.4.100 'sudo docker run --rm -d -p 8080:8080 --name app_go app_go_img'"
+					script {
+					    try {
+                            sh "ssh ec2-user@10.10.4.100 'sudo docker image rm \$(sudo docker images -f dangling=true -q)'"
+                        } catch (err) {
+                            echo "First run"
+                        }
+					}
+					sh "rm app_go.tar"
+			    //date --date='-3 day' '+%F'
+                }
+		    }
+	    }
+    }
+}

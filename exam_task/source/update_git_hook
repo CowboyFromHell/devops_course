@@ -1,0 +1,5 @@
+#!/bin/bash
+decryp_token="$(cat token | openssl enc -aes-256-cbc -d -pbkdf2)"
+
+curl -X PATCH -H "Authorization: token $decryp_token" https://api.github.com/repos/CowboyFromHell/app_one/hooks/307446599 -d "{\"config\":{\"url\":\"http://${1}:8080/github-webhook/\",\"content_type\":\"json\"}}"
+curl -X PATCH -H "Authorization: token $decryp_token" https://api.github.com/repos/CowboyFromHell/app_two/hooks/308988760 -d "{\"config\":{\"url\":\"http://${1}:8080/github-webhook/\",\"content_type\":\"json\"}}"
