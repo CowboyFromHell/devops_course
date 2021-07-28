@@ -11,7 +11,7 @@ import (
 
 
 
-var git = [8]string{"[about_myself](https://github.com/CowboyFromHell/devops_course/tree/devops_master/about_myself) - About me",
+var git = [11]string{"[about_myself](https://github.com/CowboyFromHell/devops_course/tree/devops_master/about_myself) - About me",
 "[ansible_animals](https://github.com/CowboyFromHell/devops_course/tree/devops_master/ansible_animals) - Ansible task",
 "[bash_script](https://github.com/CowboyFromHell/devops_course/tree/devops_master/bash_script) - Bash task",
 "[docker_task](https://github.com/CowboyFromHell/devops_course/tree/devops_master/docker_task) - Python app on flask in a docker image",
@@ -19,6 +19,9 @@ var git = [8]string{"[about_myself](https://github.com/CowboyFromHell/devops_cou
 "[rights_chmod](https://github.com/CowboyFromHell/devops_course/tree/devops_master/rights_chmod) - Bonus chmod task",
 "[telegram_bot](https://github.com/CowboyFromHell/devops_course/tree/devops_master/telegram_bot) - Telegram bot on golang",
 "[terraform_task](https://github.com/CowboyFromHell/devops_course/tree/devops_master/terraform_task) - Terraform task",
+"[aws_cli_task](https://github.com/CowboyFromHell/devops_course/tree/devops_master/aws_cli_task) - AWS cli task",
+"[cd_cd](https://github.com/CowboyFromHell/devops_course/tree/devops_master/cd_cd) - About CD/CD difference",
+"[exam_task](https://github.com/CowboyFromHell/devops_course/tree/devops_master/exam_task) - Exam task",
 }
 
 
@@ -77,11 +80,13 @@ func main() {
             continue
         } 
 
-        match, _ := regexp.MatchString("^/task[1-8]$", update.Message.Text)
+        match, _ := regexp.MatchString("^/task[1-9][0-1]?$", update.Message.Text)
 
-        if match { 
-            cont, _ := strconv.Atoi(string(update.Message.Text[len(update.Message.Text)-1]-1))
-            msg := tgbotapi.NewMessage(update.Message.Chat.ID, git[cont])
+        if match {
+            re := regexp.MustCompile("/task")
+            s := re.ReplaceAllString(update.Message.Text, "")
+            cont, _ := strconv.Atoi(s)
+            msg := tgbotapi.NewMessage(update.Message.Chat.ID, git[cont-1])
             msg.ParseMode = "markdown"
             bot.Send(msg)
             continue
