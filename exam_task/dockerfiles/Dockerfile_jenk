@@ -1,0 +1,8 @@
+FROM jenkins/jenkins:lts-jdk11
+USER root 
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN unzip awscliv2.zip
+RUN ./aws/install
+RUN rm /etc/localtime
+RUN ln -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+RUN echo 'Europe/Moscow' > /etc/timezone

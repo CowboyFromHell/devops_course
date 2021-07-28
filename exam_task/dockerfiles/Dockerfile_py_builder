@@ -1,0 +1,8 @@
+FROM python:latest
+RUN apt update
+RUN apt install upx-ucl -y
+RUN apt install patchelf -y
+RUN apt install python3-pip -y
+RUN pip3 install pyinstaller
+RUN pip3 install staticx
+RUN pip3 install flask

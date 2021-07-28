@@ -1,0 +1,7 @@
+FROM golang:latest
+WORKDIR /go/src/app
+COPY ./source/app_go.go .
+RUN go mod init
+RUN go mod tidy
+RUN rm app_go.go
+RUN ls -l
