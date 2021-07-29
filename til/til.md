@@ -146,3 +146,6 @@
 
 ## 22.07.2021
 + I started doing the exam task.
+
+## 29.07.2021
++ Ok, I have done it.
