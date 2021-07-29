@@ -1,7 +1,9 @@
 # Implementation of the CI/CD process
 
 "What is it?" and "how is it used?" described in great detail in this **[article](https://www.redhat.com/en/topics/devops/what-is-ci-cd)**. To keep my README from being too big, I use a picture describing the CI / CD processes:
+
 ![ci_cd](/exam_task/pictures/ci_cd.png)
+
 And below I will now describe how I see the release of this process using the example of two applications.
 
 
