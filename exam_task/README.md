@@ -1,5 +1,10 @@
 # Implementation of the CI/CD process
 
+"What is it?" and "how is it used?" described in great detail in this **[article](https://www.redhat.com/en/topics/devops/what-is-ci-cd)**. To keep my README from being too big, I use a picture describing the CI / CD processes:
+![ci_cd](/exam_task/pictures/ci_cd.png)
+And below I will now describe how I see the release of this process using the example of two applications.
+
+
 ### This implementation uses:
 + **AWS cloud as cloud computing and data storage**
 + **Jenkins as the main tool for building, logging, delivering and deploying content**
@@ -9,6 +14,11 @@
 + **Docker Hub for storing custom app builders and custom jenkins image**
 + **Terraform for deployment "infrastructure as code"**
 + **Telegram messenger for notification of build states**
+
+### Applications
+I use two application:
++ **[Python application](https://github.com/CowboyFromHell/app_one)**
++ **[Golang application](https://github.com/CowboyFromHell/app_two)**
 
 ### Docker Hub
 For future builds, I have prepared special builders for **[go](https://hub.docker.com/layers/159441296/privetkakdela/devops_course/go_builder/images/sha256-46e2588e18895400c81d42bb1138e77df1835ed3b3a5a93e4e47a58994c9a14e?context=repo)** and **[py](https://hub.docker.com/layers/159379567/privetkakdela/devops_course/python_builder/images/sha256-0e06bcb4775030a27d6893093a732bce05d1a28e6d5908b376fd93198009e0b3?context=repo)** applications. All libraries required for the build are installed in the builders.  
