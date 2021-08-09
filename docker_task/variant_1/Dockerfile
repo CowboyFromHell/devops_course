@@ -1,7 +1,15 @@
+FROM privetkakdela/devops_course:python_builder as builder
+RUN mkdir /app
+WORKDIR /app
+RUN mkdir /tmp_new
+COPY ./source ./
+RUN pyinstaller -F app_py.py
+RUN staticx ./dist/app_py app
+
 FROM scratch
-COPY ./source/test_site_app_4 /
-COPY ./source/cert.pem /
-COPY ./source/key.pem /
-COPY ./source/libgcc_s.so.1 /usr/lib/x86_64-linux-gnu/
-COPY ./tmp /tmp
-ENTRYPOINT ["/test_site_app_4"]
+COPY --from=builder /app/app /
+COPY --from=builder /app/cert.pem /
+COPY --from=builder /app/key.pem /
+COPY --from=builder /tmp_new /tmp
+EXPOSE 443/tcp
+ENTRYPOINT ["/app"]
